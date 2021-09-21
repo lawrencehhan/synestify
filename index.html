@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+    <!--Meta Tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cantata+One:bold" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+    <!--Bootstrap and stylsheets-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="css/main.css" rel="stylesheet">
+
+  <body>
+    <!--Loading welcome page-->
+    <div class="welcome">
+      <!--Welcome message-->
+      <p class="welcome__message">
+        Hey! &#127881  My name is,
+      </p>
+
+      <!--Looping name-combos-->
+      <div class="welcome__wrap">
+        <ul class="welcome__wrap__namelist">
+          <li class="welcome__wrap__name">Han, Lawrence</li>
+          <li class="welcome__wrap__name">Lawrence Han</li>
+          <li class="welcome__wrap__name">한희문</li>
+          <li class="welcome__wrap__name">Larry</li>
+        </ul>
+      </div>
+
+      <!--Enter instructions-->
+      <p class="welcome__enter">
+        welcome! click anywhere to enter
+      </p>
+
+    </div>
+
+    <!--Main Content Page-->
+    <div class='container my_container'>
+      <div class='row my_row'>
+        <div class='col my_col'>
+          col 1
+          <img src="images/Han_Lawrence_HS.jpg" alt="Lawrence Han">
+        </div>
+        <div class='col my_col'>
+          col 2
+          <p>Hello!</p>
+        </div>
+      </div>
+
+    </div>
+
+  <script>
+    const target = document.body;
+
+    function fadeOutWelcome() {
+      var welcome = document.getElementsByClassName("welcome")
+      var main = document.getElementsByClassName("main_content")
+      var body = document.body
+
+      // Fade out welcome message
+      for (var i = 0; i < welcome.length; i++) {
+        welcome.item(i).style.opacity = '0';
+      }
+      
+      // Transition background color
+      body.style.backgroundColor = '#EFF6EE';
+
+    }
+
+    function fadeInMain() {
+      var welcome = document.getElementsByClassName("welcome")
+      var main = document.getElementsByClassName("my_container")
+
+      // Fade out welcome message
+      for (var i = 0; i < welcome.length; i++) {
+        welcome.item(i).remove();
+      }
+
+      // Fade in main content
+      for (var i = 0; i < main.length; i++) {
+        main.item(i).style.opacity = '1';
+      }
+    }
+
+    //target.addEventListener('click', () => welcome.style.opacity = '0');
+    target.addEventListener('click', fadeOutWelcome)
+    target.addEventListener('transitionend', fadeInMain); // to fully remove it fully from the page
+  </script>
+  </body>
+</html>
