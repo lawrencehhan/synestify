@@ -1,0 +1,115 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: #F4F1DE;
+  transition: background-color 1.5s ease;
+}
+
+.my_container {
+  width: 100vw;
+  height: 100vh;
+  opacity: 1;
+  transition: opacity 1.2s ease;
+  font-family: "Lora", sans-serif;
+  /*& .my_row{
+    border: 3px solid red;
+  }*/
+}
+.my_container .my_col p {
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-fill-mode: both;
+  animation-name: fade-in;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+}
+.my_container .t_style_01 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #3D405B;
+}
+.my_container .t_style_02 {
+  font-size: 16px;
+  font-weight: lighter;
+  color: #3D405B;
+}
+.my_container #color_text {
+  color: #E07A5F;
+}
+.my_container #sound_text {
+  color: #81B29A;
+}
+.my_container #upload_button {
+  color: #E07A5F;
+  background-color: #F4F1DE;
+  opacity: 0.7;
+  font-family: "Lora", sans-serif;
+  padding: 0.35em 1.2em;
+  border: none;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 0.1em solid #FFFFFF;
+  text-align: center;
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: 0.55s;
+  animation-name: fade-in;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+  animation-delay: 0.55s;
+}
+.my_container #upload_button:hover {
+  color: #81B29A;
+  opacity: 1;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.my_col p:nth-of-type(1) {
+  animation-delay: 0.4666666667s;
+}
+
+.my_col p:nth-of-type(2) {
+  animation-delay: 0.6333333333s;
+}
+
+.my_col p:nth-of-type(3) {
+  animation-delay: 0.8s;
+}
+
+/*# sourceMappingURL=main.css.map */
