@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+    <!--Meta Tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cantata+One:bold" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+
+    <!--Bootstrap and stylsheets-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="css/main.css" rel="stylesheet">
+
+  <body>
+    <!--Main Content Page-->
+    <div class='d-flex container my_container justify-content-center align-items-center'>
+      <div class='row my_row'>
+        <div class='col my_col'>
+          <p class='t_style_01'>synesthesia n.</p>
+          <p class='t_style_02'>syn·es·the·sia | \ ˌsi-nəs-ˈthē-zh(ē-)ə \</p>
+          <p class='t_style_02'>a concomitant sensation and especially a subjective sensation or image of a sense (as of <span id='color_text'>color</span>)
+            <br>other than the one (as of <span id='sound_text'>sound</span>) being stimulated
+            <br>
+          </p>
+          <br>
+          <form action="" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token() }}
+            <div class='d-flex justify-content-center align-items-center'>
+              {{ form.files.label(class_="form-label") }}
+              {{ form.files(class_="form-control") }}
+            </div>
+            <p>{{ form.submit(class_="btn btn-primary") }}</p>
+          </form>
+        </div>        
+      </div>  
+    </div>
+
+  </body>
+</html>
