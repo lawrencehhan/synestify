@@ -1,8 +1,10 @@
-from flask import Flask, render_template
+import os
+
+from flask import Flask, render_template, redirect, url_for, request
 from tempfile import TemporaryDirectory
 from structlog import get_logger
 
-from webapp.forms import ConfigForm
+from forms import ConfigForm
 
 log = get_logger(__name__)
 app = Flask(__name__)
@@ -12,9 +14,15 @@ def index():
     form = ConfigForm()
     file_data = form.files.data
 
-    # if form.validate_on_submit():
-    return render_template('index.html')
+    if request.method == 'POST':
+        # with TemporaryDirectory() as tmp_dir:
+        #     file_data.save(os.path.join(tmp_dir, file_data.filename))
+        return redirect(url_for('output'))
+    return render_template('index.html', form=form)
 
+@app.route('/output')
+def output():
+    return render_template('output.html')
 
 
 

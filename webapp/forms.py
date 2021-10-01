@@ -1,6 +1,5 @@
-from flask_wtf import FlaskForm
-from wtforms import FileField, SubmitField
+from wtforms import Form, FileField, SubmitField
 
-class ConfigForm(FlaskForm):
+class ConfigForm(Form):
     files = FileField(label="Upload Image")
-    submit = SubmitField(label="Proceed")
+    submit = SubmitField(label="Submit")

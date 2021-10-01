@@ -1,5 +1,4 @@
-Flask
-flask_wtf
+Flask==2.0.1
 numpy
 pandas
 Pillow
