@@ -1,13 +1,25 @@
 from PIL import Image
 import numpy as np
-import scipy
+import os
+from pathlib import Path
+import pandas as pd
 
-img = Image.open('test_image_01_kyoto.jpg')
-img.show()
+base_path = Path(__file__).parent.parent
+img_path = os.path.join(base_path, 'tests', 'assets', 'test_image_01_kyoto.jpg')
 
-imgar = np.asarray(img)
-imgar.shape # (4903, 3262, 3) = (height pos, width pos, rgb)
+# Load and return image as 2d array
+def get_2d_image(img_path):
+    img = Image.open(img_path)
+    imgar = np.asarray(img) # Convert Pillow img to np.array
+    
+    img_height, img_width = imgar.shape[0], imgar.shape[1]
+    img_dim = img_height * img_width
 
+    imgar_2d = imgar.reshape((img_dim, 3)) # Reshape 3d array to 2d for downstream pandas conversion
+
+    df = pd.DataFrame()
+    
+    return imgar_2d
 
 # Returns normalized rgb np.array
 def normalize_rgb(rgb):
