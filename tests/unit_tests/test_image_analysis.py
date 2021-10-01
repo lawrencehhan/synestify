@@ -10,3 +10,4 @@ class TestImageAnalysis():
     def test_get_2d_image(self):
         twoDArray = get_2d_image(self.img_path)
         assert(twoDArray.shape, (15993586,3))
+        

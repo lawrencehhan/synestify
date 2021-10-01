@@ -25,7 +25,8 @@
             <br>
           </p>
           <br>
-          <form action="" method="post">
+          <form action="" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token() }}
             <div class='d-flex justify-content-center align-items-center'>
               {{ form.files.label(class_="form-label") }}
               {{ form.files(class_="form-control") }}
