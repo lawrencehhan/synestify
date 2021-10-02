@@ -7,8 +7,8 @@ from structlog import get_logger
 from uuid import uuid4
 from werkzeug.utils import secure_filename
 
-# from tasks.task_image_analysis import get_2d_image
-from forms import ConfigForm
+from tasks.task_image_analysis import get_2d_image
+from webapp.forms import ConfigForm
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
@@ -31,8 +31,8 @@ def index():
                     file_data.save(file_saved_path)
                     log.info('Saved to: ' + file_saved_path)
                     log.info('Converting image to 2d array')
-                    # outputImage = get_2d_image(file_saved_path)
-                    # log.info('2d image array: ' + outputImage)
+                    outputImage = get_2d_image(file_saved_path)
+                    log.info('2d image array: ' + outputImage)
                 except Exception as e:
                     log.error('Could not save image', error=e)
             return redirect(url_for('output'))

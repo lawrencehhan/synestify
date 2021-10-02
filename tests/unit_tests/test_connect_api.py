@@ -1,4 +1,4 @@
-from tasks.task_connect_api import sampleFunction, getTracks
+from src.tasks.task_connect_api import sampleFunction, getTracks
 
 class TestAPIConnection():
 

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from tasks.task_image_analysis import get_2d_image
+from src.tasks.task_image_analysis import get_2d_image
 
 class TestImageAnalysis():
 
