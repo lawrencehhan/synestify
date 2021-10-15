@@ -30,9 +30,9 @@ def index():
                     file_saved_path = os.path.join(tmp_dir, file_name)
                     file_data.save(file_saved_path)
                     log.info('Saved to: ' + file_saved_path)
-                    log.info('Converting image to 2d array')
+                    log.info('Converting image to 2d array: ')
                     outputImage = get_2d_image(file_saved_path)
-                    log.info('2d image array: ' + outputImage)
+                    log.info(outputImage)
                 except Exception as e:
                     log.error('Could not save image', error=e)
             return redirect(url_for('output'))
