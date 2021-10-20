@@ -8,6 +8,7 @@ from uuid import uuid4
 from werkzeug.utils import secure_filename
 
 from tasks.task_image_analysis import get_2d_image
+from tasks.task_connect_api import getSpotifyToken, getGenreSeeds
 from webapp.forms import ConfigForm
 
 csrf = CSRFProtect()
@@ -21,11 +22,10 @@ def index():
     form = ConfigForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            log.info('Clicked on submit')
+            log.info('Chosen genre: ' + form.genres.data)
             file_data = form.files.data
             file_name = secure_filename(file_data.filename)
             with TemporaryDirectory() as tmp_dir:
-                log.info('Begin saving uploaded file')
                 try:
                     file_saved_path = os.path.join(tmp_dir, file_name)
                     file_data.save(file_saved_path)
@@ -33,6 +33,7 @@ def index():
                     log.info('Converting image to 2d array: ')
                     outputImage = get_2d_image(file_saved_path)
                     log.info(outputImage)
+
                 except Exception as e:
                     log.error('Could not save image', error=e)
             return redirect(url_for('output'))
