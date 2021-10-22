@@ -29,11 +29,12 @@ def createRecommendationsUrl(limit, market, seed_artists, seed_genres, seed_trac
     base_url = "https://api.spotify.com/v1/recommendations?"
 
     # TODO: combine the data types of each input value into the base url
-    # limit = "limit=3"
-    # market = "&market=US"
-    # seed_artists = "&seed_artists=3TVXtAsR1Inumwj472S9r4"
+    limit = "limit=3"
+    market = "&market=US"
+    seed_artists = "&seed_artists=3TVXtAsR1Inumwj472S9r4"
+    seed_genres = "&seed_genres=" + seed_genres
     # seed_genres = "&seed_genres=pop"
-    # seed_tracks = "&seed_tracks=7wcWkzT1X75DguAwOWxlGt"
+    seed_tracks = "&seed_tracks=7wcWkzT1X75DguAwOWxlGt"
     recommendations_url = base_url + limit + market + seed_artists + seed_genres + seed_tracks
     return recommendations_url
 
