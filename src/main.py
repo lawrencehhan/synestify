@@ -8,6 +8,7 @@ from uuid import uuid4
 from werkzeug.utils import secure_filename
 
 from tasks.task_image_analysis import get_2d_image
+from tasks.task_connect_api import getSpotifyToken, getRecommendations
 from webapp.forms import ConfigForm
 
 csrf = CSRFProtect()
@@ -21,20 +22,29 @@ def index():
     form = ConfigForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            log.info('Clicked on submit')
-            file_data = form.files.data
-            file_name = secure_filename(file_data.filename)
+            
+            # Process uploaded image and return calculated values
+            uploaded_image_data = form.files.data
+            uploaded_image_name = secure_filename(uploaded_image_data.filename)
             with TemporaryDirectory() as tmp_dir:
-                log.info('Begin saving uploaded file')
                 try:
-                    file_saved_path = os.path.join(tmp_dir, file_name)
-                    file_data.save(file_saved_path)
-                    log.info('Saved to: ' + file_saved_path)
+                    uploaded_image_saved_path = os.path.join(tmp_dir, uploaded_image_name)
+                    uploaded_image_data.save(uploaded_image_saved_path)
+                    log.info('Saved to: ' + uploaded_image_saved_path)
                     log.info('Converting image to 2d array: ')
-                    outputImage = get_2d_image(file_saved_path)
+                    outputImage = get_2d_image(uploaded_image_saved_path)
                     log.info(outputImage)
                 except Exception as e:
                     log.error('Could not save image', error=e)
+            
+            # Configure recommendation inputs
+            chosen_genre = form.genres.data
+            log.info('Chosen genre: ' + chosen_genre)
+            chosen_artist = ''
+            chosen_track = ''
+            bearer_token = getSpotifyToken()
+            recommendations = getRecommendations(bearer_token, 3, 'US', chosen_artist, chosen_genre, chosen_track)
+            log.info(recommendations)
             return redirect(url_for('output'))
     return render_template('index.html', form=form)
 
