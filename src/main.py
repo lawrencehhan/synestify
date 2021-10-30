@@ -55,18 +55,32 @@ def output():
     bearer_token = getSpotifyToken()
     recommendations = getRecommendations(bearer_token, 3, 'US', chosen_artist, "anime", chosen_track)
     log.info(recommendations)
-    recommendation_one_album_image_url = recommendations["tracks"][0]["album"]["images"][0]["url"]
-    recommendation_one_name = recommendations["tracks"][0]["name"]
-    recommendation_one_artist = recommendations["tracks"][0]["artists"][0]["name"]
-    recommendation_one_url = recommendations["tracks"][0]["external_urls"]["spotify"]
 
+    recommendation_one_album_image_url, recommendation_one_name, recommendation_one_artist, recommendation_one_url = get_recommendation_data_by_number(recommendations, 0)
+    recommendation_two_album_image_url, recommendation_two_name, recommendation_two_artist, recommendation_two_url = get_recommendation_data_by_number(recommendations, 1)
+    recommendation_three_album_image_url, recommendation_three_name, recommendation_three_artist, recommendation_three_url = get_recommendation_data_by_number(recommendations, 2)
+    
     form.recommendation_one_album_image_url = recommendation_one_album_image_url
     form.recommendation_one_name.data = recommendation_one_name
     form.recommendation_one_artist.data = recommendation_one_artist
     form.recommendation_one_url.data = recommendation_one_url
+    form.recommendation_two_album_image_url = recommendation_two_album_image_url
+    form.recommendation_two_name.data = recommendation_two_name
+    form.recommendation_two_artist.data = recommendation_two_artist
+    form.recommendation_two_url.data = recommendation_two_url
+    form.recommendation_three_album_image_url = recommendation_three_album_image_url
+    form.recommendation_three_name.data = recommendation_three_name
+    form.recommendation_three_artist.data = recommendation_three_artist
+    form.recommendation_three_url.data = recommendation_three_url
     return render_template('output.html', form=form)
 
 
+def get_recommendation_data_by_number(recommendations: dict, recommendation_number: int):
+    recommendation_album_image_url = recommendations["tracks"][recommendation_number]["album"]["images"][0]["url"]
+    recommendation_name = recommendations["tracks"][recommendation_number]["name"]
+    recommendation_artist = recommendations["tracks"][recommendation_number]["artists"][0]["name"]
+    recommendation_url = recommendations["tracks"][recommendation_number]["external_urls"]["spotify"]
+    return recommendation_album_image_url, recommendation_name, recommendation_artist, recommendation_url
 
 if __name__ == '__main__':
     #TODO: remove debug when in production
