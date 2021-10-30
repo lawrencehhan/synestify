@@ -21,34 +21,35 @@ def getSpotifyToken():
 def sendGetRequest(bearer_token, url):
     headers = {"Authorization": "Bearer " + bearer_token}
     response = requests.get(url, headers=headers)
-    response_content = json.loads(response.content.decode("ascii"))
+    response_content = response.json()
     return response_content
 
 def createRecommendationsUrl(limit, market, seed_artists, seed_genres, seed_tracks):
-    # Get recommended songs: https://developer.spotify.com/console/get-recommendations/
     base_url = "https://api.spotify.com/v1/recommendations?"
-
-    # TODO: combine the data types of each input value into the base url
     limit = "limit=3"
     market = "&market=US"
-    seed_artists = "&seed_artists=3TVXtAsR1Inumwj472S9r4"
+    seed_artists = "&seed_artists=3TVXtAsR1Inumwj472S9r4" # Drake
     seed_genres = "&seed_genres=" + seed_genres
     # seed_genres = "&seed_genres=pop"
-    seed_tracks = "&seed_tracks=7wcWkzT1X75DguAwOWxlGt"
+    seed_tracks = "&seed_tracks=7wcWkzT1X75DguAwOWxlGt" # Way 2 Sexy
     recommendations_url = base_url + limit + market + seed_artists + seed_genres + seed_tracks
     return recommendations_url
 
 def getRecommendations(bearer_token, limit, market, seed_artists, seed_genres, seed_tracks):
+    # Get recommended songs: https://developer.spotify.com/console/get-recommendations/
+    
     url = createRecommendationsUrl(limit, market, seed_artists, seed_genres, seed_tracks)
     recommendations = sendGetRequest(bearer_token, url)
     return recommendations
 
 def getArtistIds(): 
     # Search for artist seed ids https://api.spotify.com/v1/search
+
     return 
 
 def getGenreSeeds(bearer_token):
     # Get list of genres: https://developer.spotify.com/console/get-available-genre-seeds/
+    
     url = "	https://api.spotify.com/v1/recommendations/available-genre-seeds"
     genre_list = sendGetRequest(bearer_token, url)
     return genre_list['genres']

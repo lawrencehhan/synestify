@@ -1,4 +1,5 @@
 import os
+import urllib.request
 
 from flask import Flask, render_template, redirect, url_for, request
 from flask_wtf.csrf import CSRFProtect
@@ -9,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 from tasks.task_image_analysis import get_2d_image
 from tasks.task_connect_api import getSpotifyToken, getRecommendations
-from webapp.forms import ConfigForm
+from webapp.forms import ConfigForm, OutputForm
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
@@ -40,21 +41,30 @@ def index():
             # Configure recommendation inputs
             chosen_genre = form.genres.data
             log.info('Chosen genre: ' + chosen_genre)
-            chosen_artist = ''
-            chosen_track = ''
-            bearer_token = getSpotifyToken()
-            recommendations = getRecommendations(bearer_token, 3, 'US', chosen_artist, chosen_genre, chosen_track)
-            log.info(recommendations)
             return redirect(url_for('output'))
     return render_template('index.html', form=form)
 
 @app.route('/output')
 def output():
-    return render_template('output.html')
 
+    form = OutputForm()
 
+    chosen_genre = ''
+    chosen_artist = ''
+    chosen_track = ''
+    bearer_token = getSpotifyToken()
+    recommendations = getRecommendations(bearer_token, 3, 'US', chosen_artist, "anime", chosen_track)
+    log.info(recommendations)
+    recommendation_one_album_image_url = recommendations["tracks"][0]["album"]["images"][0]["url"]
+    recommendation_one_name = recommendations["tracks"][0]["name"]
+    recommendation_one_artist = recommendations["tracks"][0]["artists"][0]["name"]
+    recommendation_one_url = recommendations["tracks"][0]["external_urls"]["spotify"]
 
-
+    form.recommendation_one_album_image_url = recommendation_one_album_image_url
+    form.recommendation_one_name.data = recommendation_one_name
+    form.recommendation_one_artist.data = recommendation_one_artist
+    form.recommendation_one_url.data = recommendation_one_url
+    return render_template('output.html', form=form)
 
 
 
