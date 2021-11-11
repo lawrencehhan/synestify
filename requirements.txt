@@ -7,3 +7,4 @@ requests
 scipy
 spotipy
 structlog
+Flask-WTF

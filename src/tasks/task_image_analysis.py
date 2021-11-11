@@ -4,11 +4,11 @@ import os
 from pathlib import Path
 import pandas as pd
 
-base_path = Path(__file__).parent.parent
+base_path = Path(__file__).parent.parent.parent
 img_path = os.path.join(base_path, 'tests', 'assets', 'test_image_01_kyoto.jpg')
 
-# Load and return image as 2d array
-def get_2d_image(img_path):
+# Load and return image information stored in Pandas df
+def get_image_df(img_path):
     img = Image.open(img_path)
     imgar = np.asarray(img) # Convert Pillow img to np.array
     
@@ -17,9 +17,103 @@ def get_2d_image(img_path):
 
     imgar_2d = imgar.reshape((img_dim, 3)) # Reshape 3d array to 2d for downstream pandas conversion
 
-    df = pd.DataFrame()
+    df = pd.DataFrame(imgar_2d, columns=['pixel_r', 'pixel_g', 'pixel_b'])
     
-    return imgar_2d
+    return df
+
+# Returns the appropriate piecewise function to use given 
+def get_hue_prime_pw(rgb_list, max_rgb):
+    r, g, b = rgb_list[0], rgb_list[1], rgb_list[2]
+
+    hue_prime_pw = { # Piecewise mathetmical definiion of hue' (aka length of RYGCP)
+        #r: lambda c: ((g-b)/c) % 6, # Formula referenced on wikipedia, that may be incorrect
+        r: lambda c: ((g-b)/c) + 6 if ((g-b)/c)<0 else ((g-b)/c), # 360/60 = 6 = deg shift for R° @ 0° to bring the segment above 0°
+        g: lambda c: ((b-r)/c) + 2, # 120/60 = 2 = deg shift for G° @ 120° w/ ea hex side being 60°
+        b: lambda c: ((r-g)/c) + 4, # 240/60 = 4 = deg shift for B° @ 240° w/ ea hex side being 60°
+        0: lambda c: c
+    } 
+
+    pw = hue_prime_pw[max_rgb]
+    return pw
+
+# Add to RGB df: 
+def df_rgb_to_hsl_list(df): 
+    df['pixel_r_norm'] = df['pixel_r'].apply(lambda val: val/255)
+    df['pixel_g_norm'] = df['pixel_g'].apply(lambda val: val/255)
+    df['pixel_b_norm'] = df['pixel_b'].apply(lambda val: val/255)
+    
+    df['pixel_rgb_norm'] = df[['pixel_r_norm', 'pixel_g_norm', 'pixel_b_norm']].values.tolist()
+
+    # Basic RGB properties used for calculation
+    df['max_rgb'] = df['pixel_rgb_norm'].apply(max)
+    df['min_rgb'] = df['pixel_rgb_norm'].apply(min)
+    df['chroma'] = df['max_rgb'] - df['min_rgb']
+
+    ## Hue Calculation
+    df['h_prime_pw'] = df.apply(lambda x: get_hue_prime_pw(x['pixel_rgb_norm'], x['max_rgb']), axis=1)
+    # Alternative speed runs:
+    # - calc max rgb within get_hue_prime_pw
+    # - input rgb individually rather than as a list
+    # - dictionary lambda ref vs if match/case statements?
+    # - directly obtaining hue_prime rather than having a col for pw
+
+
+    df['h_prime_pw'] = df['FIX HERE'].apply(get_hue_prime_pw)
+    # search if storing lambda functions in cols and using them later is possible
+    df['h_prime'] = df['chroma'].apply(df['h_prime_pw'])
+    df['pixel_h'] = df['h_prime'] * 60
+
+    df['h_prime'] = df['chroma'].apply(hue_prime_pw[df['max_rgb']])
+    df['pixel_h'] = df['h_prime'] * 60
+
+
+def df_rgb_to_hsl_nolist(df):
+    df['pixel_r_norm'] = df['pixel_r'].apply(lambda val: val/255)
+    df['pixel_g_norm'] = df['pixel_g'].apply(lambda val: val/255)
+    df['pixel_b_norm'] = df['pixel_b'].apply(lambda val: val/255)
+    # currently takes 8.4s
+
+    # Basic RGB properties used for calculation
+    df['max_rgb'] = df.loc[:, 'pixel_r_norm':'pixel_b_norm'].apply(max, axis='columns')
+    df['min_rgb'] = df.loc[:, 'pixel_r_norm':'pixel_b_norm'].apply(min, axis='columns')
+    df['chroma'] = df['max_rgb'] - df['min_rgb']
+
+    ## Hue Calculation
+    for row in range(len(df)):
+        r, g, b = df.loc[row, 'pixel_r_norm'], df.loc[row, 'pixel_g_norm'], df.loc[row, 'pixel_b_norm']
+        max_rgb = df.loc[row, 'max_rgb']
+        c = df.loc[row, 'chroma']
+        
+        if max_rgb == r:
+            if ((g-b)/c)<0:
+                h_prime = ((g-b)/c) + 6 
+            else:
+                h_prime = ((g-b)/c)
+        elif max_rgb == g:
+            h_prime = ((b-r)/c) + 2
+        elif max_rgb == b:
+            h_prime = ((r-g)/c) + 4
+        elif max_rgb == 0:
+            h_prime = 0
+        df.loc[row, 'hue_prime'] = h_prime
+
+    df['pixel_h'] = df['hue_prime'] * 60
+
+    ## Luminance Calculation: Average of largest and smallest RGB components
+    df['luminance'] = (df['max_rgb'] + df['min_rgb']) / 2 * 100 # unit: luminance%
+    
+    ## Saturation Calculation: Chroma scaled to fill [0,1]
+    df['saturation'] = df['chroma'] / (1 - abs(2*(df['luminance']/100) - 1)) * 100 # unit: saturation%
+
+    
+
+## Array based conversion pixel-by-pixel (slow)
+# Load and return image as 2d array
+def get_image_array(img_path):
+    img = Image.open(img_path)
+    imgar = np.asarray(img) # Convert Pillow img to np.array
+
+    return imgar
 
 # Returns normalized rgb np.array
 def normalize_rgb(rgb):
@@ -59,7 +153,6 @@ def rgb_to_hsl_pixel(rgb):
     hsl = np.asarray([h, s, l])
     return hsl
 
-
 # Converts every pixel in an array type image from RGB to HSL
 def rgb_to_hsl_imgar(imgar):
     img_height = imgar.shape[0]
@@ -74,5 +167,60 @@ def rgb_to_hsl_imgar(imgar):
             hsl_imgar[h, w] = hsl_pixel
 
             print(f'Pixel @ {h}x{w}: {hsl_pixel}')
+    
+    return hsl_imgar
+
+
+
+## Array based conversion, but taking the full matrix rather than by per pixel
+# rgb_imgar = get_image_array(img_path)
+
+# Takes 3d array of rgb image, and returns hue, saturation, and luminance as 2d arrays
+def get_hsl(rgb_imgar):
+    rgb_imgar = rgb_imgar/255 # normalize rgb values
+    
+    r, g, b = rgb_imgar.T # Transposes 3d array, and separates into 2d color arrays
+    
+    min_rgb, max_rgb = np.min(rgb_imgar, 2).T, np.max(rgb_imgar, 2).T
+
+    c = max_rgb - min_rgb # Chroma
+    c_msk = c != 0 # Chroma mask/check for 0 vals (as hues will be kept @ 0 then)
+   
+    ## Hue Calculation
+    h = np.zeros(r.shape)
+
+    # Case when 'r' is max in pixel pt1 (negative radial shift)
+    mask = (max_rgb == r) & c_msk & ((g-b)/c < 0) 
+    h[mask] = (((g-b)/c) + 6)[mask] # 360/60 = 6 = deg shift for R° @ 0° to bring the segment above 0°
+    # Case when 'r' is max in pixel pt2 (no radial shift)
+    mask = (max_rgb == r) & c_msk & ((g-b)/c >= 0)
+    h[mask] = ((g-b)/c)[mask]
+
+    # Case when 'g' is max
+    mask = (max_rgb == g) & c_msk
+    h[mask] = (((b-r)/c) + 2)[mask] # 120/60 = 2 = deg shift for G° @ 120° w/ ea hex side being 60°
+
+    # Case when 'b' is max
+    mask = (max_rgb == b) & c_msk
+    h[mask] = (((r-g)/c) + 4)[mask] # 240/60 = 4 = deg shift for B° @ 240° w/ ea hex side being 60°
+
+    h *= 60 # unit: hue°
+
+    ## Luminance Calculation: Average of largest and smallest RGB components
+    l = (max_rgb + min_rgb) / 2 * 100 # unit: luminance%
+    
+    ## Saturation Calculation: Chroma scaled to fill [0,1]
+    s = np.zeros(r.shape)
+    s[c_msk] = (c / (1 - abs(2*(l/100) - 1)) * 100)[c_msk] # unit: saturation%
+
+    return h, s, l
+
+# Combines 2d h, s, l arrays into one 3d array to be ref'd as one image
+def combine_hsl(h, s, l):
+    hsl_imgar = np.zeros((h.shape[0], h.shape[1], 3))
+
+    hsl_imgar[..., 0] = h # note: array[..., 0] == array[:,:,0]
+    hsl_imgar[..., 1] = s
+    hsl_imgar[..., 2] = l
     
     return hsl_imgar
