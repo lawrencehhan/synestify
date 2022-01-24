@@ -7,13 +7,26 @@ from tasks.task_connect_api import getSpotifyToken, getGenreSeeds
 bearer_token = getSpotifyToken()
 genre_list = getGenreSeeds(bearer_token)
 
+
 class ConfigForm(FlaskForm):
-    files = FileField(label="Upload Image", validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png'], 'Image files only!')])
-    genres = SelectField(label='Choose Favorite Genre',
-        choices=[genre for genre in genre_list])
-    artist = StringField(label='Enter Favorite Artist (Full Artist Name)', validators=[DataRequired()])
-    track = StringField(label='Enter Favorite Track (Full Track Name)', validators=[DataRequired()])
+    files = FileField(
+        label="Upload Image",
+        validators=[
+            FileRequired(),
+            FileAllowed(["jpg", "jpeg", "png"], "Image files only!"),
+        ],
+    )
+    genres = SelectField(
+        label="Choose Favorite Genre", choices=[genre for genre in genre_list]
+    )
+    artist = StringField(
+        label="Enter Favorite Artist (Full Artist Name)", validators=[DataRequired()]
+    )
+    track = StringField(
+        label="Enter Favorite Track (Full Track Name)", validators=[DataRequired()]
+    )
     submit = SubmitField(label="Submit")
+
 
 class OutputForm(FlaskForm):
     recommendation_one_album_image_url = ""
