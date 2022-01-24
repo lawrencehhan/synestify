@@ -8,8 +8,9 @@ Flask and Python were used to set up a web layout for receiving data, displaying
 - Clone the repository to a local IDE
 - Set up a virtual environment and run pip install -r requirements.txt to download required project packages
 - Run the src/main.py file to start up a local Flask app
-- Open a web browser and navigate to http://127.0.0.1:5000/ (local url) to input user music preferences and upload image
-- Click submit to view the top three recommendations from Spotify's recommendation engine
+- Open a web browser and navigate to http://127.0.0.1:5000/ 
+- Select the genre to receive song recommmendations for, and enter your favorite artist and song name
+- Click submit to view the top three song recommendations based on the parameters and image you provided!
 
 ## **Creators**
 [Charles Chen](https://github.com/charlesyjchen) + 
