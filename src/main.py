@@ -64,25 +64,12 @@ def output():
     log.info("User chosen genre: " + session["user_genre"])
 
     recommendations = getRecommendations(bearer_token, query_results_limit, "US", user_artist_seed, user_genre, user_track_seed)
-    recommendation_one_album_image_url, recommendation_one_name, recommendation_one_artist, recommendation_one_url = _get_recommendation_data_by_number(recommendations, 0)
-    recommendation_two_album_image_url, recommendation_two_name, recommendation_two_artist, recommendation_two_url = _get_recommendation_data_by_number(recommendations, 1)
-    recommendation_three_album_image_url, recommendation_three_name, recommendation_three_artist, recommendation_three_url = _get_recommendation_data_by_number(recommendations, 2)
-    log.info("Recommendation 1: " + recommendation_one_name + " by " + recommendation_one_artist)
-    log.info("Recommendation 2: " + recommendation_two_name + " by " + recommendation_two_artist)
-    log.info("Recommendation 3: " + recommendation_three_name + " by " + recommendation_three_artist)
-
-    form.recommendation_one_album_image_url = recommendation_one_album_image_url
-    form.recommendation_one_name.data = recommendation_one_name
-    form.recommendation_one_artist.data = recommendation_one_artist
-    form.recommendation_one_url.data = recommendation_one_url
-    form.recommendation_two_album_image_url = recommendation_two_album_image_url
-    form.recommendation_two_name.data = recommendation_two_name
-    form.recommendation_two_artist.data = recommendation_two_artist
-    form.recommendation_two_url.data = recommendation_two_url
-    form.recommendation_three_album_image_url = recommendation_three_album_image_url
-    form.recommendation_three_name.data = recommendation_three_name
-    form.recommendation_three_artist.data = recommendation_three_artist
-    form.recommendation_three_url.data = recommendation_three_url
+    form.recommendation_one_album_image_url, form.recommendation_one_name.data, form.recommendation_one_artist.data, form.recommendation_one_url.data = _get_recommendation_data_by_number(recommendations, 0)
+    form.recommendation_two_album_image_url, form.recommendation_two_name.data, form.recommendation_two_artist.data, form.recommendation_two_url.data = _get_recommendation_data_by_number(recommendations, 1)
+    form.recommendation_three_album_image_url, form.recommendation_three_name.data, form.recommendation_three_artist.data, form.recommendation_three_url.data = _get_recommendation_data_by_number(recommendations, 2)
+    log.info("Recommendation 1: " + form.recommendation_one_name.data + " by " + form.recommendation_one_artist.data)
+    log.info("Recommendation 2: " + form.recommendation_two_name.data + " by " + form.recommendation_two_artist.data)
+    log.info("Recommendation 3: " + form.recommendation_three_name.data + " by " + form.recommendation_three_artist.data)
     return render_template("output.html", form=form)
 
 
