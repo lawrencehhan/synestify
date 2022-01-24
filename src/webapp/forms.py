@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField
+from wtforms import SubmitField, SelectField, StringField, TextAreaField, RadioField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 from tasks.task_connect_api import getSpotifyToken, getGenreSeeds
@@ -12,3 +12,19 @@ class ConfigForm(FlaskForm):
     genres = SelectField(label='Choose Favorite Genre', 
         choices=[genre for genre in genre_list])
     submit = SubmitField(label="Submit")
+
+class OutputForm(FlaskForm):
+    recommendation_one_album_image_url = ""
+    recommendation_one_name = TextAreaField(label="Track Name")
+    recommendation_one_artist = TextAreaField(label="Artist Name")
+    recommendation_one_url = TextAreaField(label="Track URL")
+
+    recommendation_two_album_image_url = ""
+    recommendation_two_name = TextAreaField(label="Track Name")
+    recommendation_two_artist = TextAreaField(label="Artist Name")
+    recommendation_two_url = TextAreaField(label="Track URL")
+
+    recommendation_three_album_image_url = ""
+    recommendation_three_name = TextAreaField(label="Track Name")
+    recommendation_three_artist = TextAreaField(label="Artist Name")
+    recommendation_three_url = TextAreaField(label="Track URL")
