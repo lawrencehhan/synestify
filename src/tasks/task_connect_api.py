@@ -2,6 +2,7 @@ import base64
 import json
 import requests
 
+# Nonsensitive credentials
 client_id = "094f39d25a5d45c3b0671baa71d58425"
 client_secret = "bbd8a243877d4092ba5774484b41dc2e"
 
@@ -30,26 +31,22 @@ def createRecommendationsUrl(limit, market, seed_artists, seed_genres, seed_trac
     market = "&market=US"
     seed_artists = "&seed_artists=3TVXtAsR1Inumwj472S9r4" # Drake
     seed_genres = "&seed_genres=" + seed_genres
-    # seed_genres = "&seed_genres=pop"
     seed_tracks = "&seed_tracks=7wcWkzT1X75DguAwOWxlGt" # Way 2 Sexy
     recommendations_url = base_url + limit + market + seed_artists + seed_genres + seed_tracks
     return recommendations_url
 
 def getRecommendations(bearer_token, limit, market, seed_artists, seed_genres, seed_tracks):
     # Get recommended songs: https://developer.spotify.com/console/get-recommendations/
-    
     url = createRecommendationsUrl(limit, market, seed_artists, seed_genres, seed_tracks)
     recommendations = sendGetRequest(bearer_token, url)
     return recommendations
 
 def getArtistIds(): 
     # Search for artist seed ids https://api.spotify.com/v1/search
-
     return 
 
 def getGenreSeeds(bearer_token):
     # Get list of genres: https://developer.spotify.com/console/get-available-genre-seeds/
-    
     url = "	https://api.spotify.com/v1/recommendations/available-genre-seeds"
     genre_list = sendGetRequest(bearer_token, url)
     return genre_list['genres']

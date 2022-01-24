@@ -1,7 +1,7 @@
 import os
 import urllib.request
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 from flask_wtf.csrf import CSRFProtect
 from tempfile import TemporaryDirectory
 from structlog import get_logger
@@ -38,9 +38,9 @@ def index():
                 except Exception as e:
                     log.error('Could not save image', error=e)
             
-            # Configure recommendation inputs
-            chosen_genre = form.genres.data
-            log.info('Chosen genre: ' + chosen_genre)
+            # TODO: Configure recommendation inputs
+            session['genre'] = form.genres.data
+            log.info('Chosen genre: ' + session['genre'])
             return redirect(url_for('output'))
     return render_template('index.html', form=form)
 
@@ -48,17 +48,16 @@ def index():
 def output():
 
     form = OutputForm()
-
-    chosen_genre = ''
+    chosen_genre = session['genre']
     chosen_artist = ''
     chosen_track = ''
     bearer_token = getSpotifyToken()
-    recommendations = getRecommendations(bearer_token, 3, 'US', chosen_artist, "anime", chosen_track)
+    recommendations = getRecommendations(bearer_token, 3, 'US', chosen_artist, chosen_genre, chosen_track)
     log.info(recommendations)
 
-    recommendation_one_album_image_url, recommendation_one_name, recommendation_one_artist, recommendation_one_url = get_recommendation_data_by_number(recommendations, 0)
-    recommendation_two_album_image_url, recommendation_two_name, recommendation_two_artist, recommendation_two_url = get_recommendation_data_by_number(recommendations, 1)
-    recommendation_three_album_image_url, recommendation_three_name, recommendation_three_artist, recommendation_three_url = get_recommendation_data_by_number(recommendations, 2)
+    recommendation_one_album_image_url, recommendation_one_name, recommendation_one_artist, recommendation_one_url = _get_recommendation_data_by_number(recommendations, 0)
+    recommendation_two_album_image_url, recommendation_two_name, recommendation_two_artist, recommendation_two_url = _get_recommendation_data_by_number(recommendations, 1)
+    recommendation_three_album_image_url, recommendation_three_name, recommendation_three_artist, recommendation_three_url = _get_recommendation_data_by_number(recommendations, 2)
     
     form.recommendation_one_album_image_url = recommendation_one_album_image_url
     form.recommendation_one_name.data = recommendation_one_name
@@ -75,7 +74,7 @@ def output():
     return render_template('output.html', form=form)
 
 
-def get_recommendation_data_by_number(recommendations: dict, recommendation_number: int):
+def _get_recommendation_data_by_number(recommendations: dict, recommendation_number: int):
     recommendation_album_image_url = recommendations["tracks"][recommendation_number]["album"]["images"][0]["url"]
     recommendation_name = recommendations["tracks"][recommendation_number]["name"]
     recommendation_artist = recommendations["tracks"][recommendation_number]["artists"][0]["name"]
