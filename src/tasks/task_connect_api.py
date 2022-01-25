@@ -1,23 +1,34 @@
 import base64
+from dotenv import load_dotenv
 import json
+import os
 import requests
+from structlog import get_logger
 
-# Nonsensitive credentials
-client_id = "094f39d25a5d45c3b0671baa71d58425"
-client_secret = "bbd8a243877d4092ba5774484b41dc2e"
+
+load_dotenv()
+
+
+log = get_logger(__name__)
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
 
 def getSpotifyToken():
     # Client Credentials Flow: https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
     authUrl = "https://accounts.spotify.com/api/token"
 
-    message = f"{client_id}:{client_secret}".encode("ascii")
+    message = f"{CLIENT_ID}:{CLIENT_SECRET}".encode("ascii")
     base64_message = base64.b64encode(message).decode("ascii")
 
     auth_headers = {"Authorization": "Basic " + base64_message}
     auth_data = {"grant_type": "client_credentials"}
     response = requests.post(authUrl, data=auth_data, headers=auth_headers)
-    bearer_token = (json.loads(response.content.decode("ascii")))["access_token"]
+    try:
+        bearer_token = (json.loads(response.content.decode("ascii")))["access_token"]
+    except:
+        log.error("Invalid Client ID or Client Secret in .env file")
+        quit()
     return bearer_token
 
 

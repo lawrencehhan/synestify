@@ -1,11 +1,11 @@
 Flask==2.0.1
 flask_wtf
+Flask-WTF
 numpy
 pandas
 Pillow
 pytest
+python-dotenv
 requests
 scipy
-spotipy
 structlog
-Flask-WTF

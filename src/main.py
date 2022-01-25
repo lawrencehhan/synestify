@@ -33,7 +33,7 @@ def index():
                         tmp_dir, uploaded_image_name
                     )
                     uploaded_image_data.save(uploaded_image_saved_path)
-                    log.info("Saved to: " + uploaded_image_saved_path)
+                    log.info("Image temporarily saved to: " + uploaded_image_saved_path)
                 except Exception as e:
                     log.error("Could not save image", error=e)
 
