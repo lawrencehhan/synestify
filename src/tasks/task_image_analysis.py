@@ -253,22 +253,23 @@ def convert_img_to_hsl(img_path):
 
 
 ## Testing in terminal
-t = list(range(1,19))
-t = np.array(t).reshape(2,3,3)
+def testing_code():
+    t = list(range(1,19))
+    t = np.array(t).reshape(2,3,3)
 
-thsl = t.copy()
-thsl = np.array(thsl, dtype=float) # Don't know why, but this is needed to keep floats
-for i, matrix in enumerate(thsl):
-    for j, arr in enumerate(matrix):
-        print(f'At position ({i}, {j}):')
-        print(f'starting pixel: {arr}')
-        hsl = rgb_to_hsl_pixel(arr)
-        tf = hsl[0]
-        ty = type(tf)
-        print(f'pixel to hsl: {hsl} as type {ty} (first val: {tf})')
+    thsl = t.copy()
+    thsl = np.array(thsl, dtype=float) # Don't know why, but this is needed to keep floats
+    for i, matrix in enumerate(thsl):
+        for j, arr in enumerate(matrix):
+            print(f'At position ({i}, {j}):')
+            print(f'starting pixel: {arr}')
+            hsl = rgb_to_hsl_pixel(arr)
+            tf = hsl[0]
+            ty = type(tf)
+            print(f'pixel to hsl: {hsl} as type {ty} (first val: {tf})')
 
-        thsl[i,j] = hsl
-        sample = thsl[i,j]
-        tya = type(thsl[i,j][0])
-        print(f'pixel after change: {sample} as type {tya}')
-        print('\n')
+            thsl[i,j] = hsl
+            sample = thsl[i,j]
+            tya = type(thsl[i,j][0])
+            print(f'pixel after change: {sample} as type {tya}')
+            print('\n')
