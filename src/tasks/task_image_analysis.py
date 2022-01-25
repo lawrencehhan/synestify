@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 
 base_path = Path(__file__).parent.parent.parent
-img_path = os.path.join(base_path, 'tests', 'assets', 'test_image_01_kyoto.jpg')
+img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_kyoto.jpg')
 
 # Load and return image information stored in Pandas df
 def get_image_df(img_path):
@@ -111,9 +111,9 @@ def df_rgb_to_hsl_nolist(df):
 # Load and return image as 2d array
 def get_image_array(img_path):
     img = Image.open(img_path)
-    imgar = np.asarray(img) # Convert Pillow img to np.array
+    rgb_imgar = np.asarray(img) # Convert Pillow img to np.array
 
-    return imgar
+    return rgb_imgar
 
 # Returns normalized rgb np.array
 def normalize_rgb(rgb):
@@ -181,7 +181,7 @@ def get_hsl(rgb_imgar):
     
     r, g, b = rgb_imgar.T # Transposes 3d array, and separates into 2d color arrays
     
-    min_rgb, max_rgb = np.min(rgb_imgar, 2).T, np.max(rgb_imgar, 2).T
+    min_rgb, max_rgb = np.min(rgb_imgar, 2).T, np.max(rgb_imgar, 2).T # Gets the min of each individual pixel, hence the 2 for order # (ex. 0,1,2)
 
     c = max_rgb - min_rgb # Chroma
     c_msk = c != 0 # Chroma mask/check for 0 vals (as hues will be kept @ 0 then)
@@ -224,3 +224,51 @@ def combine_hsl(h, s, l):
     hsl_imgar[..., 2] = l
     
     return hsl_imgar
+
+# Format hsl matrix to be the same shape as the original rgb image matrix
+def format_hsl(hsl_imgar):
+    bx, by, bz = hsl_imgar.shape # the hsl_imgar has its x and y axis flipped from the original rgb_imgar
+    new_imgar = hsl_imgar.copy().reshape(by, bx, bz)
+    
+    for row_indx in range(by): # by is referenced as axis 1 and 0 is switched in hsl_imgar
+        row_new = hsl_imgar[:, row_indx] # In the current hsl_imgar, axis 1 = row_indx rather than the wanted col_indx 
+        new_imgar[row_indx] = row_new # Hence, new_imgar's axis 0's relative row_indx is replaced with row_new
+    
+    return new_imgar
+
+# Final exec function for converting given image file to hsl_matrix
+def convert_img_to_hsl(img_path):
+    rgb_imgar = get_image_array(img_path)
+
+    h, s, l = get_hsl(rgb_imgar)
+    hsl_imgar = combine_hsl(h,s,l)
+    hsl_imgar = format_hsl(hsl_imgar)
+
+    return hsl_imgar
+
+
+## Continue - Plot the hsl graphs to see clusters and also find summative data
+
+
+
+
+## Testing in terminal
+t = list(range(1,19))
+t = np.array(t).reshape(2,3,3)
+
+thsl = t.copy()
+thsl = np.array(thsl, dtype=float) # Don't know why, but this is needed to keep floats
+for i, matrix in enumerate(thsl):
+    for j, arr in enumerate(matrix):
+        print(f'At position ({i}, {j}):')
+        print(f'starting pixel: {arr}')
+        hsl = rgb_to_hsl_pixel(arr)
+        tf = hsl[0]
+        ty = type(tf)
+        print(f'pixel to hsl: {hsl} as type {ty} (first val: {tf})')
+
+        thsl[i,j] = hsl
+        sample = thsl[i,j]
+        tya = type(thsl[i,j][0])
+        print(f'pixel after change: {sample} as type {tya}')
+        print('\n')
