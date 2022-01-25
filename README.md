@@ -2,11 +2,15 @@
 Synestify analyzes a user-uploaded image and user-inputted information to recommend songs curated to reflect the image's visual cues and user's interests. The analysis matches tonal, hue, brightness, user-data, etc. to musical values accepted by Spotify's public API to utilize Spotify's recommendation engine. 
 
 ## **Technical Workflow**
-Flask and Python were used to set up a web layout for receiving data, displaying recommended songs, and transforming image data into musical parameters. Upon generating musical parameters, Synestify connects to the Spotify for Developers API using the OAuth 2.0 client credentials flow. Synestify then sends HTTP calls to Spotify's recommendations endpoint to retrieve recommended song details and display results on a webpage.
+Flask and Python were used to set up a web layout for receiving data, displaying recommended songs, and transforming image data into musical parameters. Upon generating musical parameters, Synestify connects to the Spotify for Developers API using the OAuth 2.0 client credentials flow. Synestify then sends HTTP calls to Spotify's recommendations endpoint to retrieve recommended song details and display results on a webpage. 
 
-![Sample Input Page](tests\assets\example_input_page.jpg?raw=true "Sample Input Page")
+**Example Input Page**
 
-![Sample Output Page](tests\assets\example_output_page.jpg?raw=true "Sample Output Page")
+![Sample Input Page](tests/assets/example_input_page.jpg?raw=true "Sample Input Page")
+
+**Example Output Page**
+
+![Sample Output Page](tests/assets/example_output_page.jpg?raw=true "Sample Output Page")
 
 ## **Usage**
 - **REQUIREMENT: You must have a Spotify account (free or paid plan)**
