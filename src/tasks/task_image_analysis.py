@@ -115,6 +115,14 @@ def get_image_array(img_path):
 
     return rgb_imgar
 
+# Load and return reduced image as 2d array
+def get_reduced_image_array(img_path, reduc_factor=10):
+    img = Image.open(img_path)
+    img = img.reduce(reduc_factor)
+    rgb_imgar = np.asarray(img) # Convert Pillow img to np.array
+
+    return rgb_imgar
+
 # Returns normalized rgb np.array
 def normalize_rgb(rgb):
     rgb_n = [val/255 for val in rgb]
@@ -237,8 +245,11 @@ def format_hsl(hsl_imgar):
     return new_imgar
 
 # Final exec function for converting given image file to hsl_matrix
-def convert_img_to_hsl(img_path):
-    rgb_imgar = get_image_array(img_path)
+def convert_img_to_hsl(img_path, reduced=True):
+    if reduced:
+        rgb_imgar = get_reduced_image_array(img_path)
+    else:
+        rgb_imgar = get_image_array(img_path)
 
     h, s, l = get_hsl(rgb_imgar)
     hsl_imgar = combine_hsl(h,s,l)
@@ -246,6 +257,32 @@ def convert_img_to_hsl(img_path):
 
     return hsl_imgar
 
+# Convert a 3d numpy array to a pandas dataframe
+def array_to_df(imgar):
+    names = ['ROW', 'COL', 'VAL']
+    index = pd.MultiIndex.from_product([range(s) for s in imgar.shape], names=names)
+    df = pd.DataFrame({'imgar': imgar.flatten()}, index=index)['imgar']
+
+    df = df.unstack(level='VAL').swaplevel().sort_index()
+    col_titles = ['HUE', 'SATURATION', 'LIGHTNESS']
+    df.columns = col_titles
+
+    return df
+
+# Return a tuple of scorings for energy, loudness, and tempo
+def df_scoring(df):
+    energy = round(df['HUE'].mean()/36) # Normalize hue to a scale of 1-10
+    loudness = round(df['SATURATION'].mean()/10)
+    tempo = round(df['LIGHTNESS'].mean()/10)
+
+    return (energy, loudness, tempo)
+# imgar = np.random.randint(0,10, (5,4,3))
+# 3/13, 4903x3262 image takes 21.2s to convert to df - compress images or just analyze arrays directly
+# - compress image, do aggregate analysis with charles notes, create dictionary of val -> spotify api vals
+# compression notes:
+# - reducing the sample image by a factor of 10 decreased..
+# -- hsl conversion from 3.9s to 0.2s
+# -- df conversino from 21.2s to 0.1s
 
 ## Continue - Plot the hsl graphs to see clusters and also find summative data
 
