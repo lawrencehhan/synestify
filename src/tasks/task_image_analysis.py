@@ -10,8 +10,15 @@ img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_kyoto.jpg')
 ## Array based conversion method for image-to-hsl_array
 
 # Load and return image as 2d array
-def get_image_array(img_path):
-    img = Image.open(img_path)
+def get_image_array(img_path, reduc_factor=1):
+    img = Image.open(img_path).reduce(reduc_factor)
+    rgb_imgar = np.asarray(img) # Convert Pillow img to np.array
+
+    return rgb_imgar
+
+# Load and return image as 2d array at a reduced size
+def get_reduced_image_array(img_path, reduc_factor):
+    img = Image.open(img_path).reduce(reduc_factor)
     rgb_imgar = np.asarray(img) # Convert Pillow img to np.array
 
     return rgb_imgar
@@ -77,13 +84,8 @@ def format_hsl(hsl_imgar):
     
     return new_imgar
 
-# Converting given image file to hsl array matrix
-def convert_img_to_hsl(img_path, reduced):
-    if reduced:
-        rgb_imgar = get_reduced_image_array(img_path)
-    else:
-        rgb_imgar = get_image_array(img_path)
-
+# Converting given RGB np.array to an HSL array matrix
+def convert_rgb_to_hsl(rgb_imgar):
     h, s, l = get_hsl(rgb_imgar)
     hsl_imgar = combine_hsl(h,s,l)
     hsl_imgar = format_hsl(hsl_imgar)
@@ -111,8 +113,9 @@ def df_scoring(df):
     return (energy, loudness, tempo)
 
 # Wrapped up executable function to collect scores from raw image file
-def get_image_score(img_path, reduced=True):
-    hsl_imgar = convert_img_to_hsl(img_path, reduced)
+def get_image_score(img_path, reduc_factor):
+    rgb_imgar = get_image_array(img_path, reduc_factor)
+    hsl_imgar = convert_rgb_to_hsl(rgb_imgar)
     df = array_to_df(hsl_imgar)
     scores = df_scoring(df)
 
