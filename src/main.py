@@ -23,7 +23,6 @@ def index():
     form = ConfigForm()
     if request.method == "POST":
         if form.validate_on_submit():
-
             # Process uploaded image and return calculated values
             uploaded_image_data = form.files.data
             uploaded_image_name = secure_filename(uploaded_image_data.filename)
@@ -36,13 +35,21 @@ def index():
                     log.info("Image temporarily saved to: " + uploaded_image_saved_path)
                 except Exception as e:
                     log.error("Could not save image", error=e)
+            return redirect(url_for("main"))
+    return render_template("index.html", form=form)
 
+
+@app.route("/main", methods=["POST", "GET"])
+def main():
+    form = ConfigForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
             # Save all musical parameters to session
             session["user_genre"] = form.genres.data
             session["user_artist"] = form.artist.data
             session["user_track"] = form.track.data
             return redirect(url_for("output"))
-    return render_template("index.html", form=form)
+    return render_template("main.html", form=form)
 
 
 @app.route("/output")

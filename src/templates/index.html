@@ -12,8 +12,8 @@
     <!--Bootstrap and stylsheets-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/styles/main.css">
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main.css') }}">
-
+    <!--<link rel="stylesheet" href="{{ url_for('static',filename='styles/main.css') }}">
+    -->
   <body>
     <!--Main Content Page-->
     <div class='d-flex container my_container justify-content-center align-items-center'>
@@ -23,28 +23,17 @@
           <p class='t_style_02'>syn·es·the·sia | \ ˌsi-nəs-ˈthē-zh(ē-)ə \</p>
           <p class='t_style_02'>a concomitant sensation and especially a subjective sensation or image of a sense (as of <span id='color_text'>color</span>)
             <br>other than the one (as of <span id='sound_text'>sound</span>) being stimulated
-            <br>
           </p>
-          <br>
+          <p class='t_style_02' id='synestify_desc'>synestify analyzes your visual, and presents you with its sound</p>
           <form action="" method="post" enctype="multipart/form-data">
             {{ form.csrf_token() }}
             <div class='d-flex justify-content-center align-items-center'>
-              {{ form.genres.label(class_="form-label") }}
-              {{ form.genres(class_="form-control") }}
+              <p class='file_sub'>{{ form.files.label(class_="form-label") }}</p>
+              <p class='file_sub'>{{ form.files(class_="form-control") }}</p>
             </div>
             <div class='d-flex justify-content-center align-items-center'>
-              {{ form.artist.label(class_="form-label") }}
-              {{ form.artist(class_="form-control") }}
+              <p id='submit_btn'>{{ form.submit(class_="btn") }}</p>
             </div>
-            <div class='d-flex justify-content-center align-items-center'>
-              {{ form.track.label(class_="form-label") }}
-              {{ form.track(class_="form-control") }}
-            </div>
-            <div class='d-flex justify-content-center align-items-center'>
-              {{ form.files.label(class_="form-label") }}
-              {{ form.files(class_="form-control") }}
-            </div>
-            <p>{{ form.submit(class_="btn btn-primary") }}</p>
           </form>
         </div>        
       </div>  

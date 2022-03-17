@@ -25,7 +25,7 @@ class ConfigForm(FlaskForm):
     track = StringField(
         label="Enter Favorite Track (Full Track Name)", validators=[DataRequired()]
     )
-    submit = SubmitField(label="Submit")
+    submit = SubmitField(label="Synestify")
 
 
 class OutputForm(FlaskForm):
