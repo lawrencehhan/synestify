@@ -7,7 +7,7 @@ from structlog import get_logger
 from uuid import uuid4
 from werkzeug.utils import secure_filename
 
-from tasks.task_image_analysis import get_image_df
+from tasks.task_image_analysis import get_image_score
 from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSearchResults
 from webapp.forms import ConfigForm, OutputForm
 
