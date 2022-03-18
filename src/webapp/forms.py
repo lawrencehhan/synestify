@@ -7,7 +7,6 @@ from tasks.task_connect_api import getSpotifyToken, getGenreSeeds
 bearer_token = getSpotifyToken()
 genre_list = getGenreSeeds(bearer_token)
 
-
 class ConfigForm(FlaskForm):
     files = FileField(
         label="Upload Image",
@@ -16,6 +15,13 @@ class ConfigForm(FlaskForm):
             FileAllowed(["jpg", "jpeg", "png"], "Image files only!"),
         ],
     )
+    genres = SelectField(
+        label="Genre: ", choices=[genre for genre in genre_list]
+    )
+    submit = SubmitField(label="Synestify")
+
+# combine forms to be one again and only have genre and file info
+class SecForm(FlaskForm):
     genres = SelectField(
         label="Choose Favorite Genre", choices=[genre for genre in genre_list]
     )

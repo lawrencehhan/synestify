@@ -1,0 +1,152 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: #F4F1DE;
+  transition: background-color 1.5s ease;
+}
+
+.my_container {
+  width: 100vw;
+  height: 100vh;
+  opacity: 1;
+  transition: opacity 1.2s ease;
+  font-family: "Lora", sans-serif;
+}
+.my_container .my_col {
+  padding: 4vw;
+}
+.my_container .my_col p {
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-fill-mode: both;
+  animation-name: fade-in;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+}
+.my_container .t_style_01 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #3D405B;
+}
+.my_container .t_style_02 {
+  font-size: 16px;
+  font-weight: lighter;
+  color: #3D405B;
+}
+.my_container #color_text {
+  color: #E07A5F;
+}
+.my_container #sound_text {
+  color: #81B29A;
+}
+.my_container #submit_btn {
+  background-color: #E07A5F;
+  color: #81B29A;
+  opacity: 0.5;
+  font-family: "Lora", sans-serif;
+  padding: 0.35em 1.2em;
+  border: none;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition: all 0.2s;
+  text-align: center;
+  width: 10vw;
+  -webkit-animation-name: fade-in-part;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: 2s;
+  animation-name: fade-in-part;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+  animation-delay: 2s;
+}
+.my_container #submit_btn:hover {
+  background-color: #81B29A;
+  color: #E07A5F;
+  opacity: 1;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@-o-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@-moz-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+.my_col p:nth-of-type(1) {
+  animation-delay: 0.4666666667s;
+}
+
+.my_col p:nth-of-type(2) {
+  animation-delay: 0.6333333333s;
+}
+
+.my_col p:nth-of-type(3) {
+  animation-delay: 0.8s;
+}
+
+.my_col p:nth-of-type(4) {
+  animation-delay: 0.9666666667s;
+}
+
+/*# sourceMappingURL=input.css.map */

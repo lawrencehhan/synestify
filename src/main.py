@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 from tasks.task_image_analysis import get_image_score
 from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSearchResults
-from webapp.forms import ConfigForm, OutputForm
+from webapp.forms import SecForm, ConfigForm, OutputForm
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
@@ -33,23 +33,30 @@ def index():
                     )
                     uploaded_image_data.save(uploaded_image_saved_path)
                     log.info("Image temporarily saved to: " + uploaded_image_saved_path)
+
+                    energy, loudness, tempo = get_image_score(uploaded_image_saved_path, 10)
+                    session["energy"], session["loudness"], session["tempo"] = energy, loudness, tempo
+                    log.info(f'Image scores (energy, loudness, tempo) found to be: {energy}, {loudness}, {tempo}')
                 except Exception as e:
                     log.error("Could not save image", error=e)
-            return redirect(url_for("main"))
+            # Save Spotify seed parameter to session
+            session["user_genre"] = form.genres.data
+            return redirect(url_for("input"))
     return render_template("index.html", form=form)
 
 
-@app.route("/main", methods=["POST", "GET"])
-def main():
-    form = ConfigForm()
+@app.route("/input", methods=["POST", "GET"])
+def input():
+    form = SecForm()
     if request.method == "POST":
         if form.validate_on_submit():
             # Save all musical parameters to session
             session["user_genre"] = form.genres.data
+            # Get artist and track info back-end instead of from user
             session["user_artist"] = form.artist.data
             session["user_track"] = form.track.data
             return redirect(url_for("output"))
-    return render_template("main.html", form=form)
+    return render_template("input.html", form=form)
 
 
 @app.route("/output")
