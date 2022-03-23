@@ -8,8 +8,8 @@ from uuid import uuid4
 from werkzeug.utils import secure_filename
 
 from tasks.task_image_analysis import get_image_score
-from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSearchResults
-from webapp.forms import SecForm, ConfigForm, OutputForm
+from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSearchResults, getSeedFromGenre
+from webapp.forms import ConfigForm, OutputForm
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
@@ -41,22 +41,8 @@ def index():
                     log.error("Could not save image", error=e)
             # Save Spotify seed parameter to session
             session["user_genre"] = form.genres.data
-            return redirect(url_for("input"))
-    return render_template("index.html", form=form)
-
-
-@app.route("/input", methods=["POST", "GET"])
-def input():
-    form = SecForm()
-    if request.method == "POST":
-        if form.validate_on_submit():
-            # Save all musical parameters to session
-            session["user_genre"] = form.genres.data
-            # Get artist and track info back-end instead of from user
-            session["user_artist"] = form.artist.data
-            session["user_track"] = form.track.data
             return redirect(url_for("output"))
-    return render_template("input.html", form=form)
+    return render_template("index.html", form=form)
 
 
 @app.route("/output")
@@ -66,18 +52,18 @@ def output():
     bearer_token = getSpotifyToken()
     query_results_limit = 3
 
-    artist_search_results = getSearchResults(bearer_token, session['user_artist'], "artist", query_results_limit)
-    user_artist_seed = artist_search_results["artists"]["items"][0]["id"] if artist_search_results else "No artist seed found"
-    log.info("Found favorite artist: " + artist_search_results["artists"]["items"][0]["name"])
-
-    track_search_results = getSearchResults(bearer_token, session['user_track'], "track", query_results_limit)
-    user_track_seed = track_search_results["tracks"]["items"][0]["id"] if track_search_results else "No track seed found"
-    log.info("Found favorite track: " + track_search_results["tracks"]["items"][0]["name"] + " by " + track_search_results["tracks"]["items"][0]["artists"][0]["name"])
 
     user_genre = session["user_genre"]
     log.info("User chosen genre: " + session["user_genre"])
+    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist')
+    log.info("User generated artist: " + user_artist_name)
+    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track')
+    log.info("User generated track: " + user_track_name)
+    target_energy, target_loudness, target_tempo = session["energy"], session["loudness"], session["tempo"]
+    log.info(f"Analyzed targets (energy, loudness, tempo): {target_energy}, {target_loudness}, {target_tempo}")
 
-    recommendations = getRecommendations(bearer_token, query_results_limit, "US", user_artist_seed, user_genre, user_track_seed)
+
+    recommendations = getRecommendations(bearer_token, query_results_limit, "US", user_artist_seed, user_genre, user_track_seed, target_energy, target_loudness, target_tempo)
     form.recommendation_one_album_image_url, form.recommendation_one_name.data, form.recommendation_one_artist.data, form.recommendation_one_url.data = _get_recommendation_data_by_number(recommendations, 0)
     form.recommendation_two_album_image_url, form.recommendation_two_name.data, form.recommendation_two_artist.data, form.recommendation_two_url.data = _get_recommendation_data_by_number(recommendations, 1)
     form.recommendation_three_album_image_url, form.recommendation_three_name.data, form.recommendation_three_artist.data, form.recommendation_three_url.data = _get_recommendation_data_by_number(recommendations, 2)

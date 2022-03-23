@@ -20,21 +20,9 @@ class ConfigForm(FlaskForm):
     )
     submit = SubmitField(label="Synestify")
 
-# combine forms to be one again and only have genre and file info
-class SecForm(FlaskForm):
-    genres = SelectField(
-        label="Choose Favorite Genre", choices=[genre for genre in genre_list]
-    )
-    artist = StringField(
-        label="Enter Favorite Artist (Full Artist Name)", validators=[DataRequired()]
-    )
-    track = StringField(
-        label="Enter Favorite Track (Full Track Name)", validators=[DataRequired()]
-    )
-    submit = SubmitField(label="Synestify")
-
 
 class OutputForm(FlaskForm):
+    
     recommendation_one_album_image_url = ""
     recommendation_one_name = TextAreaField(label="Track Name")
     recommendation_one_artist = TextAreaField(label="Artist Name")
