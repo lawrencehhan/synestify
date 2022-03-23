@@ -11,11 +11,82 @@
 
     <!--Bootstrap and stylsheets-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="../css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles/output.css">
 
   <body>
     <!--Main Content Page-->
     <div class='d-flex container my_container justify-content-center align-items-center'>
+      <div class='row my_row' id='graph_row'>
+        <!--Placeholder row for later displaying color distribution graph and analysis-->
+      </div>
+      <form action="" method="post" enctype="multipart/form-data">
+        {{ form.csrf_token() }}
+        <div class='row my_row rec_row'>
+          <div class='col my_col album_col d-flex justify-content-center align-items-center'>
+            <img src="{{form.recommendation_one_album_image_url}}">
+          </div>
+          <div class='col my_col info_col d-flex justify-content-center align-items-center'>
+            <div class="rec_info">
+              {{ form.recommendation_one_name.label(class_="form-label") }}
+              {{ form.recommendation_one_name(class_="form-control") }}
+            </div>
+            <div class="rec_info">
+              {{ form.recommendation_one_artist.label(class_="form-label") }}
+              {{ form.recommendation_one_artist(class_="form-control") }}
+            </div>
+            <div class="rec_info">
+              {{ form.recommendation_one_url.label(class_="form-label") }}
+              {{ form.recommendation_one_url(class_="form-control") }}
+            </div>
+          </div>
+        </div>
+
+        <div class='row my_row rec_row'>
+          <div class='col my_col album_col d-flex justify-content-center align-items-center'>
+            <img src="{{form.recommendation_two_album_image_url}}">
+          </div>
+          <div class='col my_col info_col d-flex justify-content-center align-items-center'>
+            <div class="rec_info">
+              {{ form.recommendation_two_name.label(class_="form-label") }}
+              {{ form.recommendation_two_name(class_="form-control") }}
+            </div>
+            <div class="rec_info">
+              {{ form.recommendation_two_artist.label(class_="form-label") }}
+              {{ form.recommendation_two_artist(class_="form-control") }}
+            </div>
+            <div class="rec_info">
+              {{ form.recommendation_two_url.label(class_="form-label") }}
+              {{ form.recommendation_two_url(class_="form-control") }}
+            </div>
+          </div>
+        </div>
+
+        <div class='row my_row rec_row'>
+          <div class='col my_col album_col d-flex justify-content-center align-items-center'>
+            <img src="{{form.recommendation_three_album_image_url}}">
+          </div>
+          <div class='col my_col info_col d-flex justify-content-center align-items-center'>
+            <div class="rec_info">
+              {{ form.recommendation_three_name.label(class_="form-label") }}
+              {{ form.recommendation_three_name(class_="form-control") }}
+            </div>
+            <div class="rec_info">
+              {{ form.recommendation_three_artist.label(class_="form-label") }}
+              {{ form.recommendation_three_artist(class_="form-control") }}
+            </div>
+            <div class="rec_info">
+              {{ form.recommendation_three_url.label(class_="form-label") }}
+              {{ form.recommendation_three_url(class_="form-control") }}
+            </div>
+          </div>
+        </div>
+
+
+      
+      
+      
+      
+      <!--
       <div class='row my_row'>
         <div class='col my_col'>
           <form action="" method="post" enctype="multipart/form-data">
@@ -68,7 +139,7 @@
           </form>   
         </div>     
       </div>  
+      -->
     </div>
-
   </body>
 </html>
