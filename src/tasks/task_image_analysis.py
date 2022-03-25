@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 
 base_path = Path(__file__).parent.parent.parent
+img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_darkwindow.jpg')
 img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_kyoto.jpg')
 
 ## Array based conversion method for image-to-hsl_array
@@ -106,10 +107,11 @@ def array_to_df(imgar):
 
 # Return a tuple of scorings for energy, loudness, and tempo
 def df_scoring(df):
-    energy = round(df['HUE'].mean()/36) # Normalize hue to a scale of 1-10 from 0-360
-    loudness = round(df['SATURATION'].mean()/10) 
-    tempo = round(df['LIGHTNESS'].mean()/10)
-
+    energy = round(df['HUE'].mean()/360, 2) # Normalize hue to a scale of 0-1 from 0-360
+    loudness = round(df['SATURATION'].mean()/100, 2)
+    tempo = ((170-70)*((df['LIGHTNESS'].mean()-0)/100))+70 # Tempo normalized to 70-170 range
+    tempo = round(tempo, 2)
+    print(f'energy: {energy}, loudness: {loudness}, tempo: {tempo}')
     return (energy, loudness, tempo)
 
 # Wrapped up executable function to collect scores from raw image file

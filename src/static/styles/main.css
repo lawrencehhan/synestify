@@ -12,9 +12,6 @@ body {
   opacity: 1;
   transition: opacity 1.2s ease;
   font-family: "Lora", sans-serif;
-  /*& .my_row{
-    border: 3px solid red;
-  }*/
 }
 .my_container .my_col p {
   -webkit-animation-name: fade-in;
@@ -34,16 +31,33 @@ body {
   font-weight: lighter;
   color: #3D405B;
 }
+.my_container #synestify_desc {
+  color: #b2abf2;
+  font-style: italic;
+}
 .my_container #color_text {
   color: #E07A5F;
 }
 .my_container #sound_text {
   color: #81B29A;
 }
-.my_container #upload_button {
-  color: #E07A5F;
-  background-color: #F4F1DE;
-  opacity: 0.7;
+.my_container .file_sub {
+  font-family: "Lora", sans-serif;
+  transition: all 0.2s;
+  opacity: 0;
+  -webkit-animation-name: fade-in-part;
+  -webkit-animation-duration: 2.5s;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: 5s;
+  animation-name: fade-in-part;
+  animation-duration: 2.5s;
+  animation-fill-mode: both;
+  animation-delay: 5s;
+}
+.my_container #submit_btn {
+  background-color: #E07A5F;
+  color: #81B29A;
+  opacity: 0.5;
   font-family: "Lora", sans-serif;
   padding: 0.35em 1.2em;
   border: none;
@@ -52,19 +66,20 @@ body {
   box-sizing: border-box;
   text-decoration: none;
   transition: all 0.2s;
-  border: 0.1em solid #FFFFFF;
   text-align: center;
-  -webkit-animation-name: fade-in;
-  -webkit-animation-duration: 2s;
+  width: 10vw;
+  -webkit-animation-name: fade-in-part;
+  -webkit-animation-duration: 2.5s;
   -webkit-animation-fill-mode: both;
-  -webkit-animation-delay: 0.55s;
-  animation-name: fade-in;
-  animation-duration: 2s;
+  -webkit-animation-delay: 3s;
+  animation-name: fade-in-part;
+  animation-duration: 2.5s;
   animation-fill-mode: both;
-  animation-delay: 0.55s;
+  animation-delay: 3s;
 }
-.my_container #upload_button:hover {
-  color: #81B29A;
+.my_container #submit_btn:hover {
+  background-color: #81B29A;
+  color: #E07A5F;
   opacity: 1;
 }
 
@@ -100,6 +115,38 @@ body {
     opacity: 1;
   }
 }
+@-webkit-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@-o-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@-moz-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
 .my_col p:nth-of-type(1) {
   animation-delay: 0.4666666667s;
 }
@@ -110,6 +157,10 @@ body {
 
 .my_col p:nth-of-type(3) {
   animation-delay: 0.8s;
+}
+
+.my_col p:nth-of-type(4) {
+  animation-delay: 0.9666666667s;
 }
 
 /*# sourceMappingURL=main.css.map */

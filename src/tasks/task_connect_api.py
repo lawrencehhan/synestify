@@ -4,6 +4,7 @@ import json
 import os
 import requests
 from structlog import get_logger
+from random import randint
 
 
 load_dotenv()
@@ -34,7 +35,7 @@ def getSpotifyToken():
 
 def getGenreSeeds(bearer_token: str):
     # Get list of genres: https://developer.spotify.com/console/get-available-genre-seeds/
-    url = "	https://api.spotify.com/v1/recommendations/available-genre-seeds"
+    url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
     genre_list = sendGetRequest(bearer_token, url)
     return genre_list["genres"]
 
@@ -53,10 +54,13 @@ def getRecommendations(
     seed_artists: str,
     seed_genres: str,
     seed_tracks: str,
+    target_energy: float,
+    target_loudness: float,
+    target_tempo: float
 ):
     # Get recommended songs: https://developer.spotify.com/console/get-recommendations/
     url = _createRecommendationsUrl(
-        limit, market, seed_artists, seed_genres, seed_tracks
+        limit, market, seed_artists, seed_genres, seed_tracks, target_energy, target_loudness, target_tempo
     )
     recommendations = sendGetRequest(bearer_token, url)
     return recommendations
@@ -79,7 +83,14 @@ def _createSearchUrl(query: str, search_type: str, limit: int):
 
 
 def _createRecommendationsUrl(
-    limit: int, market: str, seed_artist: str, seed_genre: str, seed_track: str
+    limit: int, 
+    market: str, 
+    seed_artist: str, 
+    seed_genre: str, 
+    seed_track: str,
+    target_energy: float,
+    target_loudness: float,
+    target_tempo: float
 ):
     base_url = "https://api.spotify.com/v1/recommendations?"
     limit = "limit=" + str(limit)
@@ -91,7 +102,46 @@ def _createRecommendationsUrl(
     seed_track = (
         "&seed_tracks=" + seed_track
     )  # Example: 7wcWkzT1X75DguAwOWxlGt Way 2 Sexy
+    target_energy = "&target_energy=" + str(target_energy)
+    target_loudness = "&target_loudness=" + str(target_loudness)
+    target_tempo = "&target_tempo=" + str(target_tempo)
+
     recommendations_url = (
-        base_url + limit + market + seed_artist + seed_genre + seed_track
+        base_url + limit + market + seed_artist + seed_genre + seed_track + target_energy + target_loudness + target_tempo
     )
     return recommendations_url
+
+
+def getSeedFromGenre(bearer_token: str, seed_genre: str, search_type: str, total_seeds: int):
+    seeds = getSearchResults(bearer_token, f"genre:{seed_genre}", search_type, total_seeds)
+    seed_selection = randint(0, total_seeds-1)
+    seed = seeds[f'{search_type}s']['items'][seed_selection]
+    seed_id = seed['id']
+    seed_name = seed['name']
+    return (seed_id, seed_name)
+
+
+### No longer needed
+def getCategories(bearer_token: str):
+    categories_url = "https://api.spotify.com/v1/browse/categories?limit=50" # limit is capped at 50
+    categories_json = sendGetRequest(bearer_token, categories_url)
+    categories_list = categories_json['categories']['items']
+    categories_list = [item['id'] for item in categories_list]
+    return categories_list
+    
+
+def getGenreCategoriesOverlap(bearer_token: str):
+    categories_url = 'https://api.spotify.com/v1/browse/categories?limit=50' # limit is capped at 50
+    categories_json = sendGetRequest(bearer_token, categories_url)
+    categories_list = categories_json['categories']['items']
+    categories_list = [category for item in categories_list for category in item['id'].split('_')]
+    
+    genre_list = getGenreSeeds(bearer_token)
+    genre_list = [genre.replace('-', '') for genre in genre_list]
+
+    overlap_list = [genre for genre in genre_list if (genre in categories_list)]
+    return overlap_list
+
+# make two dictionaries referencing back each change to the original respective names so
+# 1) can access category for artist and song rec
+# 2) can access genre seed

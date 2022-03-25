@@ -11,11 +11,74 @@
 
     <!--Bootstrap and stylsheets-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="../css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles/output.css">
 
   <body>
     <!--Main Content Page-->
     <div class='d-flex container my_container justify-content-center align-items-center'>
+      <div class='row my_row submission_row'>
+        <!--Placeholder row for later displaying color distribution graph and analysis-->
+        <div class='col-6 my_col d-flex justify-content-center align-items-center'>
+          <img class='img_fluid submitted_img' src='../static/assets/submissions/{{image_name}}'>
+        </div>
+        <div class='col-6 my_col d-flex justify-content-center align-items-center'>
+          <div>
+            <p class='t_style_01 text-left'>Synesstified Image: {{image_name}}</p><br>
+            <p class='t_style_02 text-left'>Visual's <span class='clr_g'>energy</span>, <span class='clr_r'>loudness</span>, <span class='clr_b'>tempo</span>:</p>
+            <p class='t_style_02 text-center'><span class='clr_g'>{{analysis_targets[0]}}</span>, <span class='clr_r'>{{analysis_targets[1]}}</span>, <span class='clr_b'>{{analysis_targets[2]}}</span></p> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='d-flex container my_container justify-content-center align-items-center'>
+      <form action="" method="post" enctype="multipart/form-data">
+        {{ form.csrf_token() }}
+        <div class='row my_row rec_row'>
+          <div class='col my_col album_col d-flex justify-content-center align-items-center'>
+            <img class='img-fluid' src="{{form.recommendation_one_album_image_url}}">
+          </div>
+          <div class='col my_col info_col d-flex justify-content-center align-items-center'>
+            <div class="rec_info">
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_one_name.label(class_="form-label") }}:</span> {{ form.recommendation_one_name.data }}</p>
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_one_artist.label(class_="form-label") }}:</span> {{ form.recommendation_one_artist.data }}</p>
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_one_url.label(class_="form-label") }}:</span> <a class='url' href={{ form.recommendation_one_url.data }} target='_blank'>{{ form.recommendation_one_url.data }}</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class='row my_row rec_row'>
+          <div class='col my_col album_col d-flex justify-content-center align-items-center'>
+            <img class='img-fluid' src="{{form.recommendation_two_album_image_url}}">
+          </div>
+          <div class='col my_col info_col d-flex justify-content-center align-items-center'>
+            <div class="rec_info">
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_two_name.label(class_="form-label") }}:</span> {{ form.recommendation_two_name.data }}</p>
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_two_artist.label(class_="form-label") }}:</span> {{ form.recommendation_two_artist.data }}</p>
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_two_url.label(class_="form-label") }}:</span> <a class='url' href={{ form.recommendation_two_url.data }} target='_blank'>{{ form.recommendation_two_url.data }}</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class='row my_row rec_row'>
+          <div class='col my_col album_col d-flex justify-content-center align-items-center'>
+            <img class='img-fluid' src="{{form.recommendation_three_album_image_url}}">
+          </div>
+          <div class='col my_col info_col d-flex justify-content-center align-items-center'>
+            <div class="rec_info">
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_three_name.label(class_="form-label") }}:</span> {{ form.recommendation_three_name.data }}</p>
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_three_artist.label(class_="form-label") }}:</span> {{ form.recommendation_three_artist.data }}</p>
+              <p class='t_style_01'><span class='t_label'>{{ form.recommendation_three_url.label(class_="form-label") }}:</span> <a class='url' href={{ form.recommendation_three_url.data }} target='_blank'>{{ form.recommendation_three_url.data }}</a></p>
+            </div>
+          </div>
+        </div>
+
+
+      
+      
+      
+      
+      <!--
       <div class='row my_row'>
         <div class='col my_col'>
           <form action="" method="post" enctype="multipart/form-data">
@@ -68,7 +131,7 @@
           </form>   
         </div>     
       </div>  
+      -->
     </div>
-
   </body>
 </html>
