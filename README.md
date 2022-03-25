@@ -26,7 +26,7 @@ Flask and Python were used to set up a web layout for receiving data, displaying
 - Replace the `CLIENT_ID` and `CLIENT_SECRET` values with the saved values from Part 1
 - Run the `synestify/src/main.py` file to start up a local Flask app
 - Open a web browser and navigate to http://127.0.0.1:5000/ 
-- Select the genre to receive song recommmendations for, and enter your favorite artist and song name
+- Select the genre to receive song recommmendations for
 - Click submit to view the top three song recommendations based on the parameters and image you provided!
 
 ## **Creators**
