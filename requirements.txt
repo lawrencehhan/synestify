@@ -9,3 +9,5 @@ python-dotenv
 requests
 scipy
 structlog
+io
+base64

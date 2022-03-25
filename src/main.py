@@ -6,9 +6,13 @@ from tempfile import TemporaryDirectory
 from structlog import get_logger
 from uuid import uuid4
 from werkzeug.utils import secure_filename
+from pathlib import Path
+from PIL import Image
+import base64
+import io
 
 from tasks.task_image_analysis import get_image_score
-from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSearchResults, getSeedFromGenre
+from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSeedFromGenre
 from webapp.forms import ConfigForm, OutputForm
 
 csrf = CSRFProtect()
@@ -26,20 +30,16 @@ def index():
             # Process uploaded image and return calculated values
             uploaded_image_data = form.files.data
             uploaded_image_name = secure_filename(uploaded_image_data.filename)
-            with TemporaryDirectory() as tmp_dir:
-                try:
-                    uploaded_image_saved_path = os.path.join(
-                        tmp_dir, uploaded_image_name
-                    )
-                    uploaded_image_data.save(uploaded_image_saved_path)
-                    log.info("Image temporarily saved to: " + uploaded_image_saved_path)
+            session["image_name"] = uploaded_image_name
 
-                    energy, loudness, tempo = get_image_score(uploaded_image_saved_path, 10)
-                    session["energy"], session["loudness"], session["tempo"] = energy, loudness, tempo
-                    log.info(f'Image scores (energy, loudness, tempo) found to be: {energy}, {loudness}, {tempo}')
-                except Exception as e:
-                    log.error("Could not save image", error=e)
-            # Save Spotify seed parameter to session
+            uploaded_image_save_path = os.path.join(Path(__file__).parent, 'static', 'assets', 'submissions', uploaded_image_name)
+            uploaded_image_data.save(uploaded_image_save_path)
+            log.info(f"Image saved to: {uploaded_image_save_path}")
+
+            energy, loudness, tempo = get_image_score(uploaded_image_save_path, 10)
+            session["energy"], session["loudness"], session["tempo"] = energy, loudness, tempo
+            log.info(f'Image scores (energy, loudness, tempo) found to be: {energy}, {loudness}, {tempo}')
+
             session["user_genre"] = form.genres.data
             return redirect(url_for("output"))
     return render_template("index.html", form=form)
@@ -47,21 +47,20 @@ def index():
 
 @app.route("/output")
 def output():
-
     form = OutputForm()
     bearer_token = getSpotifyToken()
     query_results_limit = 3
-
+    log.info("User submitted image: " + session["image_name"])
 
     user_genre = session["user_genre"]
     log.info("User chosen genre: " + session["user_genre"])
-    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist')
+    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist', 10)
     log.info("User generated artist: " + user_artist_name)
-    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track')
+    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track', 10)
     log.info("User generated track: " + user_track_name)
-    target_energy, target_loudness, target_tempo = session["energy"], session["loudness"], session["tempo"]
+    analysis_targets = (session["energy"], session["loudness"], session["tempo"])
+    target_energy, target_loudness, target_tempo = analysis_targets
     log.info(f"Analyzed targets (energy, loudness, tempo): {target_energy}, {target_loudness}, {target_tempo}")
-
 
     recommendations = getRecommendations(bearer_token, query_results_limit, "US", user_artist_seed, user_genre, user_track_seed, target_energy, target_loudness, target_tempo)
     form.recommendation_one_album_image_url, form.recommendation_one_name.data, form.recommendation_one_artist.data, form.recommendation_one_url.data = _get_recommendation_data_by_number(recommendations, 0)
@@ -70,7 +69,7 @@ def output():
     log.info("Recommendation 1: " + form.recommendation_one_name.data + " by " + form.recommendation_one_artist.data)
     log.info("Recommendation 2: " + form.recommendation_two_name.data + " by " + form.recommendation_two_artist.data)
     log.info("Recommendation 3: " + form.recommendation_three_name.data + " by " + form.recommendation_three_artist.data)
-    return render_template("output.html", form=form)
+    return render_template("output.html", form=form, image_name=session["image_name"], analysis_targets=analysis_targets)
 
 
 def _get_recommendation_data_by_number(

@@ -111,6 +111,7 @@ def df_scoring(df):
     loudness = round(df['SATURATION'].mean()/100, 2)
     tempo = ((170-70)*((df['LIGHTNESS'].mean()-0)/100))+70 # Tempo normalized to 70-170 range
     tempo = round(tempo, 2)
+    print(f'energy: {energy}, loudness: {loudness}, tempo: {tempo}')
     return (energy, loudness, tempo)
 
 # Wrapped up executable function to collect scores from raw image file

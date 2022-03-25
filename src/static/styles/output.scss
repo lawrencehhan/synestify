@@ -2,42 +2,75 @@ body {
   background-color: #F4F1DE;
   transition: background-color 1.5s ease;
 }
-
-
 .my_container{
 opacity: 1;
 transition: opacity 1.2s ease;
 font-family: 'Lora', sans-serif;
-
-& .my_col{
-  //border: 3px dotted blue;
-  padding: 4vw;
-  & p{ // NOTE: ADD TRANSLATIONAL TRANSITION AS WELL WITH THE FOR LOOP
-    -webkit-animation-name: fade-in;
-    -webkit-animation-duration: 2s;
-    -webkit-animation-fill-mode: both;
-    //-webkit-animation-iteration-count: 1;
-    animation-name: fade-in;
-    animation-duration: 2s;
-    animation-fill-mode: both;
-    //animation-iteration-count: 1;
+& .my_row{
+  & .my_col{
+    //border: 3px dotted blue;
+    padding: 4vw;
+    & p{ // NOTE: ADD TRANSLATIONAL TRANSITION AS WELL WITH THE FOR LOOP
+      -webkit-animation-name: fade-in;
+      -webkit-animation-duration: 2s;
+      -webkit-animation-fill-mode: both;
+      //-webkit-animation-iteration-count: 1;
+      animation-name: fade-in;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+      //animation-iteration-count: 1;
+    }
+    & img{
+      -webkit-animation-name: fade-in;
+      -webkit-animation-duration: 2s;
+      -webkit-animation-fill-mode: both;
+      animation-name: fade-in;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+    }
+    & .submitted_img{
+      max-height: 55vh;
+    }
   }
 }
+& .submission_row{
+  width: 100%;
+  border-bottom: 1px solid #3D405B;
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-name: fade-in;
+  animation-duration: 5s;
+  animation-fill-mode: both;
+}
 & .t_style_01{
-  font-size: 20px;
-  font-weight: bold;
   color: #3D405B;
+  & .t_label{
+    font-weight: bold; 
+  }
+  & .url{
+    color: #3D405B;
+  }
 }
 & .t_style_02{
   font-size: 16px;
   font-weight: lighter;
   color: #3D405B;
 }
-& #color_text{
+& #color_b{
   color: #E07A5F;
 }
 & #sound_text{
   color: #81B29A;
+}
+& .clr_r{
+  color: #D64933;
+}
+& .clr_g{
+  color: #519872;
+}
+& .clr_b{
+  color: #1C5D99;
 }
 } 
 
@@ -81,8 +114,13 @@ font-family: 'Lora', sans-serif;
 100% {opacity: .75;}
 }
 
-@for $i from 1 through 4 {
+@for $i from 1 through 12 {
 .my_col p:nth-of-type(#{$i}) {
   animation-delay: #{0.3+($i)/6}s;
+  }
 }
+@for $i from 1 through 4 {
+  .my_col img:nth-of-type(#{$i}) {
+    animation-delay: #{0.3+($i)/6}s;
+  }
 }

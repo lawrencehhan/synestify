@@ -112,9 +112,9 @@ def _createRecommendationsUrl(
     return recommendations_url
 
 
-def getSeedFromGenre(bearer_token: str, seed_genre: str, search_type: str):
-    seeds = getSearchResults(bearer_token, f"genre:{seed_genre}", search_type, 5)
-    seed_selection = randint(0,4)
+def getSeedFromGenre(bearer_token: str, seed_genre: str, search_type: str, total_seeds: int):
+    seeds = getSearchResults(bearer_token, f"genre:{seed_genre}", search_type, total_seeds)
+    seed_selection = randint(0, total_seeds-1)
     seed = seeds[f'{search_type}s']['items'][seed_selection]
     seed_id = seed['id']
     seed_name = seed['name']
