@@ -37,6 +37,9 @@ body {
     font-weight: lighter;
     color: #3D405B;
   }
+  & #instructions{
+    text-align: center;
+  }
   & #synestify_desc{
     color: #b2abf2;
     font-style: italic;
@@ -47,19 +50,15 @@ body {
   & #sound_text{
     color: #81B29A;
   }
-
-  & .file_sub{
-    font-family: 'Lora', sans-serif;
-    transition: all 0.2s;
-    
-    -webkit-animation-name: fade-in-part;
-    -webkit-animation-duration: 2.5s;
+  & .sub_item{
+    -webkit-animation-name: fade-in;
+    -webkit-animation-duration: 2s;
     -webkit-animation-fill-mode: both;
-    -webkit-animation-delay: 5s;
-    animation-name: fade-in-part;
-    animation-duration: 2.5s;
+    //-webkit-animation-iteration-count: 1;
+    animation-name: fade-in;
+    animation-duration: 2s;
     animation-fill-mode: both;
-    animation-delay: 5s;
+    //animation-iteration-count: 1;
   }
   & #submit_btn{
     background-color: #E07A5F;
@@ -79,11 +78,11 @@ body {
     -webkit-animation-name: fade-in-part;
     -webkit-animation-duration: 2.5s;
     -webkit-animation-fill-mode: both;
-    -webkit-animation-delay: 3s;
+    -webkit-animation-delay: 4s;
     animation-name: fade-in-part;
     animation-duration: 2.5s;
     animation-fill-mode: both;
-    animation-delay: 3s;
+    animation-delay: 4s;
     
     &:hover{
       background-color:#81B29A;
@@ -134,7 +133,12 @@ body {
 }
 
 @for $i from 1 through 4 {
-	.my_col p:nth-of-type(#{$i}) {
+	.intro_col p:nth-of-type(#{$i}) {
 		animation-delay: #{0.3+($i)/6}s;
+  }
+}
+@for $i from 1 through 4 {
+	.instruct_col div:nth-of-type(#{$i}) {
+		animation-delay: #{2+0.3+($i)/6}s;
   }
 }
