@@ -2,16 +2,14 @@ import os
 
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_wtf.csrf import CSRFProtect
-from tempfile import TemporaryDirectory
 from structlog import get_logger
 from uuid import uuid4
 from werkzeug.utils import secure_filename
 from pathlib import Path
-from PIL import Image
-import base64
-import io
+import json
+import plotly
 
-from tasks.task_image_analysis import get_image_score
+from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
 from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSeedFromGenre
 from webapp.forms import ConfigForm, OutputForm
 
@@ -54,9 +52,9 @@ def output():
 
     user_genre = session["user_genre"]
     log.info("User chosen genre: " + session["user_genre"])
-    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist', 10)
+    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist', 50)
     log.info("User generated artist: " + user_artist_name)
-    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track', 10)
+    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track', 50)
     log.info("User generated track: " + user_track_name)
     analysis_targets = (session["energy"], session["loudness"], session["tempo"])
     target_energy, target_loudness, target_tempo = analysis_targets
@@ -69,7 +67,12 @@ def output():
     log.info("Recommendation 1: " + form.recommendation_one_name.data + " by " + form.recommendation_one_artist.data)
     log.info("Recommendation 2: " + form.recommendation_two_name.data + " by " + form.recommendation_two_artist.data)
     log.info("Recommendation 3: " + form.recommendation_three_name.data + " by " + form.recommendation_three_artist.data)
-    return render_template("output.html", form=form, image_name=session["image_name"], analysis_targets=analysis_targets)
+    
+    df = color_analysis(f'static/assets/submissions/{session["image_name"]}')
+    pie_fig = create_pie_fig(df)
+    graphJSON = json.dumps(pie_fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template("output.html", form=form, image_name=session["image_name"], analysis_targets=analysis_targets, graphJSON=graphJSON)
 
 
 def _get_recommendation_data_by_number(

@@ -3,15 +3,17 @@ import numpy as np
 import os
 from pathlib import Path
 import pandas as pd
+from collections import Counter
+from sklearn.cluster import KMeans
+import plotly.express as px
 
 base_path = Path(__file__).parent.parent.parent
 img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_darkwindow.jpg')
 img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_kyoto.jpg')
 
 ## Array based conversion method for image-to-hsl_array
-
 # Load and return image as 2d array
-def get_image_array(img_path, reduc_factor=1):
+def get_image_array(img_path, reduc_factor):
     img = Image.open(img_path).reduce(reduc_factor)
     rgb_imgar = np.asarray(img) # Convert Pillow img to np.array
 
@@ -115,10 +117,70 @@ def df_scoring(df):
     return (energy, loudness, tempo)
 
 # Wrapped up executable function to collect scores from raw image file
-def get_image_score(img_path, reduc_factor):
+def get_image_score(img_path, reduc_factor=10):
     rgb_imgar = get_image_array(img_path, reduc_factor)
     hsl_imgar = convert_rgb_to_hsl(rgb_imgar)
     df = array_to_df(hsl_imgar)
-    scores = df_scoring(df)
+    scores = df_scoring(df) # Energy, Loudness, Tempo, 
+    ## Thoughts: target valence = most prevalent color
 
     return scores
+
+# Color Analysis via K-Means: rgb 3d array to pandas df summarizing info
+def color_analysis(img_path, reduc_factor=10, clusters=5):
+    rgb_imgar = get_image_array(img_path, reduc_factor)
+    modified_imgar = rgb_imgar.reshape(rgb_imgar.shape[0]*rgb_imgar.shape[1], 3)
+    img_clusters = KMeans(n_clusters = clusters) # n_clusters is the number of clusters wanted
+    color_labels = img_clusters.fit_predict(modified_imgar) # Predicting the cluster centroids (means), also now allows next line to run
+    ## fit_predict() is used instead of fit() as the indices are needed for counting into buckets later -> for plotting
+    center_colors = img_clusters.cluster_centers_ # np.array of (clusters, 3) shape
+
+    counts = Counter(color_labels) # Dictionary of cluster-indices (key) and counts (vals)
+    df = pd.DataFrame(columns = ['CENTROID_COLOR_RGB', 'CENTROID_VOLUME', 'CENTROID_COLOR_HEX', 'Color HEX Value'], index = counts.keys())
+    for key in counts.keys():
+        hex_val = pixel_rgb_to_hex(center_colors[key])
+        df.loc[key] = [center_colors[key], counts[key], hex_val, hex_val]
+    df.sort_values(by='CENTROID_VOLUME', ascending=False, inplace=True)
+    return df
+
+# Creates a Plotly figure with a df made via color_analysis()
+def create_pie_fig(df):
+    hex_map = {val:val for val in df['CENTROID_COLOR_HEX']}
+    fig = px.pie(df, values='CENTROID_VOLUME', names='Color HEX Value', color='CENTROID_COLOR_HEX', color_discrete_map=hex_map)
+    fig.update_layout(showlegend=False, hovermode=False, paper_bgcolor='#F4F1DE')
+    fig.update_traces(textinfo='percent+label')
+    return fig
+
+# Takes a (3,) np.array RGB pixel, and returns a (3,) np.array HSL pixel
+def pixel_rgb_to_hsl(rgb_pixel):
+    rgb_pixel_n = rgb_pixel/255
+    r, g, b = rgb_pixel_n
+    max_rgb, min_rgb = max(rgb_pixel_n), min(rgb_pixel_n)
+    chroma = max_rgb - min_rgb
+
+    # Hue Calculation
+    hue_prime_pw = { # Piecewise mathetmical definiion of hue' (aka length of RYGCP)
+        #r: lambda c: ((g-b)/c) % 6,
+        r: lambda c: ((g-b)/c) + 6 if ((g-b)/c)<0 else ((g-b)/c), # 360/60 = 6 = deg shift for R° @ 0° to bring the segment above 0°
+        g: lambda c: ((b-r)/c) + 2, # 120/60 = 2 = deg shift for G° @ 120° w/ ea hex side being 60°
+        b: lambda c: ((r-g)/c) + 4, # 240/60 = 4 = deg shift for B° @ 240° w/ ea hex side being 60°
+        0: lambda c: c
+    }
+    hue_prime = hue_prime_pw[max_rgb](chroma)
+    h = hue_prime * 60
+
+    # Luminance Calculation: Average of largest and smallest RGB components
+    l = (max_rgb + min_rgb) / 2 * 100 # unit: luminance%
+    
+    # Saturation Calculation: Chroma scaled to fill [0,1]
+    if chroma == 0: # max and min are the same => no saturation
+        s = 0
+    else:
+        s = chroma / (1 - abs(2*(l/100) - 1)) * 100 # unit: saturation%
+
+    return np.asarray((h,s,l))
+
+# Takes a (3,) np.array RGB pixel, and returns its HEX val
+def pixel_rgb_to_hex(rgb_pixel):
+    r, g, b = [int(val) for val in rgb_pixel]
+    return f'#{r:02X}{g:02X}{b:02X}'
