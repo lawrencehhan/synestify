@@ -3,10 +3,6 @@ body {
   transition: background-color 1.5s ease;
 }
 
-.main_container {
-  margin: 0;
-}
-
 .my_container {
   opacity: 1;
   transition: opacity 1.2s ease;

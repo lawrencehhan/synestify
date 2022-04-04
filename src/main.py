@@ -68,7 +68,8 @@ def output():
     log.info("Recommendation 2: " + form.recommendation_two_name.data + " by " + form.recommendation_two_artist.data)
     log.info("Recommendation 3: " + form.recommendation_three_name.data + " by " + form.recommendation_three_artist.data)
     
-    df = color_analysis(f'static/assets/submissions/{session["image_name"]}')
+    img_path = os.path.join(Path(__file__).parent, 'static', 'assets', 'submissions', session["image_name"])
+    df = color_analysis(img_path)
     pie_fig = create_pie_fig(df)
     graphJSON = json.dumps(pie_fig, cls=plotly.utils.PlotlyJSONEncoder)
 
