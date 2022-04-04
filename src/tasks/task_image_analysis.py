@@ -121,7 +121,8 @@ def get_image_score(img_path, reduc_factor=10):
     rgb_imgar = get_image_array(img_path, reduc_factor)
     hsl_imgar = convert_rgb_to_hsl(rgb_imgar)
     df = array_to_df(hsl_imgar)
-    scores = df_scoring(df)
+    scores = df_scoring(df) # Energy, Loudness, Tempo, 
+    ## Thoughts: target valence = most prevalent color
 
     return scores
 
@@ -146,7 +147,7 @@ def color_analysis(img_path, reduc_factor=10, clusters=5):
 def create_pie_fig(df):
     hex_map = {val:val for val in df['CENTROID_COLOR_HEX']}
     fig = px.pie(df, values='CENTROID_VOLUME', names='Color HEX Value', color='CENTROID_COLOR_HEX', color_discrete_map=hex_map)
-    fig.update_layout(showlegend=False, hovermode=False)
+    fig.update_layout(showlegend=False, hovermode=False, paper_bgcolor='#F4F1DE')
     fig.update_traces(textinfo='percent+label')
     return fig
 

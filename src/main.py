@@ -52,9 +52,9 @@ def output():
 
     user_genre = session["user_genre"]
     log.info("User chosen genre: " + session["user_genre"])
-    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist', 10)
+    user_artist_seed, user_artist_name = getSeedFromGenre(bearer_token, user_genre, 'artist', 50)
     log.info("User generated artist: " + user_artist_name)
-    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track', 10)
+    user_track_seed, user_track_name = getSeedFromGenre(bearer_token, user_genre, 'track', 50)
     log.info("User generated track: " + user_track_name)
     analysis_targets = (session["energy"], session["loudness"], session["tempo"])
     target_energy, target_loudness, target_tempo = analysis_targets

@@ -18,7 +18,7 @@ body {
   -webkit-animation-duration: 2s;
   -webkit-animation-fill-mode: both;
   animation-name: fade-in;
-  animation-duration: 2s;
+  animation-uration: 2s;
   animation-fill-mode: both;
 }
 .my_container .t_style_01 {
@@ -52,14 +52,26 @@ body {
   animation-duration: 2s;
   animation-fill-mode: both;
 }
+.my_container .sub_item .file_sub {
+  margin-top: 0.5rem;
+}
+.my_container .sub_item .file_sub #files {
+  border: none;
+}
+.my_container .sub_item .form-label {
+  margin-right: 0.5rem;
+}
+.my_container .sub_item .form-control {
+  background-color: #F4F1DE;
+}
 .my_container #submit_btn {
   background-color: #E07A5F;
   color: #81B29A;
   opacity: 0.5;
   font-family: "Lora", sans-serif;
-  padding: 0.35em 1.2em;
+  /*padding:0.35em 1.2em;
+  margin:0 0.3em 0.3em 0;*/
   border: none;
-  margin: 0 0.3em 0.3em 0;
   border-radius: 0.12em;
   box-sizing: border-box;
   text-decoration: none;
