@@ -4,3 +4,6 @@
 .DS_Store
 .cache
 .env
+src/frontend/package-lock.json
+src/frontend/node_modules/
+src/frontend/build/
