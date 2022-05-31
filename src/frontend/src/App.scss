@@ -1,0 +1,170 @@
+$main-color-light: #FAF3DD;
+$main-color-dark: #323031; //#474554;
+$secondary-color-light: white;
+$secondary-color-dark: black;
+$pop-color: #b2abf2;
+body {
+    margin: 0;
+    #root {
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
+
+.app {
+    width: 100%;
+    height: 100%;
+    background-color: $main-color-light;
+    color: $main-color-dark;
+    font-family: 'Lora', sans-serif;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 70%;
+        border: 1px dotted black;
+        .col {
+            width: 50%;
+        }
+        .intro{
+            .intro-title{
+                font-size: 1.25rem;
+                font-weight: bold;
+            }
+            .intro-desc {
+                font-size: 1rem;
+                font-weight: lighter;
+                .text-color { 
+                    color: #E07A5F;
+                }
+                .text-sound {
+                    color: #81B29A;
+                }
+            }
+            #synestify-desc {
+                color: $pop-color;
+                font-style: italic;
+            }
+        }
+        .form {
+            
+        }
+    }
+
+  & #instructions{
+    text-align: center;
+  }
+  & .sub_item{
+    -webkit-animation-name: fade-in;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-fill-mode: both;
+    //-webkit-animation-iteration-count: 1;
+    animation-name: fade-in;
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    //animation-iteration-count: 1;
+    & .file_sub{
+      margin-top: 0.5rem;
+      & #files{
+        border: none;
+      }
+    }
+    & .form-label{
+      margin-right: 0.5rem;
+    }
+    & .form-control{
+      background-color: #F4F1DE;
+    }
+  }
+
+  & #submit_btn{
+    background-color: #E07A5F;
+    color: #81B29A;
+    opacity: 0.5;
+    font-family: 'Lora', sans-serif;
+    /*padding:0.35em 1.2em;
+    margin:0 0.3em 0.3em 0;*/
+    border: none;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    transition: all 0.2s;
+    text-align: center;
+    width: 10vw;
+
+    -webkit-animation-name: fade-in-part;
+    -webkit-animation-duration: 2.5s;
+    -webkit-animation-fill-mode: both;
+    -webkit-animation-delay: 4s;
+    animation-name: fade-in-part;
+    animation-duration: 2.5s;
+    animation-fill-mode: both;
+    animation-delay: 4s;
+    
+    &:hover{
+      background-color:#81B29A;
+      color: #E07A5F;
+      opacity: 1;
+    }
+  }
+} 
+
+.app.dark {
+    background-color: $main-color-dark;
+}
+  
+@-webkit-keyframes fade-in {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+ 
+@-o-keyframes fade-in {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+  
+@-moz-keyframes fade-in {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+  
+@keyframes fade-in {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@-webkit-keyframes fade-in-part {
+  0% {opacity: 0;}
+  100% {opacity: .75;}
+}
+ 
+@-o-keyframes fade-in-part {
+  0% {opacity: 0;}
+  100% {opacity: .75;}
+}
+  
+@-moz-keyframes fade-in-part {
+  0% {opacity: 0;}
+  100% {opacity: .75;}
+}
+  
+@keyframes fade-in-part {
+  0% {opacity: 0;}
+  100% {opacity: .75;}
+}
+
+@for $i from 1 through 4 {
+	.intro_col p:nth-of-type(#{$i}) {
+		animation-delay: #{0.3+($i)/6}s;
+  }
+}
+@for $i from 1 through 4 {
+	.instruct_col div:nth-of-type(#{$i}) {
+		animation-delay: #{2+0.3+($i)/6}s;
+  }
+}

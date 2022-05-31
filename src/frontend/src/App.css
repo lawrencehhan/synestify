@@ -1,3 +1,200 @@
+body {
+  margin: 0;
+}
+body #root {
+  width: 100vw;
+  height: 100vh;
+}
 
+.app {
+  width: 100%;
+  height: 100%;
+  background-color: #FAF3DD;
+  color: #323031;
+  font-family: "Lora", sans-serif;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app .container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 70%;
+  border: 1px dotted black;
+}
+.app .container .col {
+  width: 50%;
+}
+.app .container .intro .intro-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.app .container .intro .intro-desc {
+  font-size: 1rem;
+  font-weight: lighter;
+}
+.app .container .intro .intro-desc .text-color {
+  color: #E07A5F;
+}
+.app .container .intro .intro-desc .text-sound {
+  color: #81B29A;
+}
+.app .container .intro #synestify-desc {
+  color: #b2abf2;
+  font-style: italic;
+}
+.app #instructions {
+  text-align: center;
+}
+.app .sub_item {
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-fill-mode: both;
+  animation-name: fade-in;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+}
+.app .sub_item .file_sub {
+  margin-top: 0.5rem;
+}
+.app .sub_item .file_sub #files {
+  border: none;
+}
+.app .sub_item .form-label {
+  margin-right: 0.5rem;
+}
+.app .sub_item .form-control {
+  background-color: #F4F1DE;
+}
+.app #submit_btn {
+  background-color: #E07A5F;
+  color: #81B29A;
+  opacity: 0.5;
+  font-family: "Lora", sans-serif;
+  /*padding:0.35em 1.2em;
+  margin:0 0.3em 0.3em 0;*/
+  border: none;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition: all 0.2s;
+  text-align: center;
+  width: 10vw;
+  -webkit-animation-name: fade-in-part;
+  -webkit-animation-duration: 2.5s;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: 4s;
+  animation-name: fade-in-part;
+  animation-duration: 2.5s;
+  animation-fill-mode: both;
+  animation-delay: 4s;
+}
+.app #submit_btn:hover {
+  background-color: #81B29A;
+  color: #E07A5F;
+  opacity: 1;
+}
+
+.app.dark {
+  background-color: #323031;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@-o-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@-moz-keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+@keyframes fade-in-part {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+.intro_col p:nth-of-type(1) {
+  animation-delay: 0.4666666667s;
+}
+
+.intro_col p:nth-of-type(2) {
+  animation-delay: 0.6333333333s;
+}
+
+.intro_col p:nth-of-type(3) {
+  animation-delay: 0.8s;
+}
+
+.intro_col p:nth-of-type(4) {
+  animation-delay: 0.9666666667s;
+}
+
+.instruct_col div:nth-of-type(1) {
+  animation-delay: 2.4666666667s;
+}
+
+.instruct_col div:nth-of-type(2) {
+  animation-delay: 2.6333333333s;
+}
+
+.instruct_col div:nth-of-type(3) {
+  animation-delay: 2.8s;
+}
+
+.instruct_col div:nth-of-type(4) {
+  animation-delay: 2.9666666667s;
+}
 
 /*# sourceMappingURL=App.css.map */
