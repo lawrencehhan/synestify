@@ -21,11 +21,13 @@ body #root {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 70%;
   border: 1px dotted black;
 }
 .app .container .col {
-  width: 50%;
+  width: 48%;
+  border: 1px dotted black;
 }
 .app .container .intro .intro-title {
   font-size: 1.25rem;
@@ -44,6 +46,49 @@ body #root {
 .app .container .intro #synestify-desc {
   color: #b2abf2;
   font-style: italic;
+}
+.app .container .form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.app .container .form .form-desc {
+  font-size: 1rem;
+  font-weight: lighter;
+  width: 100%;
+  text-align: center;
+}
+.app .container .form .form-sheet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.app .container .form .form-sheet .form-dropdown-label {
+  text-align: center;
+}
+.app .container .form .form-sheet .form-dropdown-menu {
+  background-color: #FAF3DD;
+  text-align: center;
+  width: 55%;
+}
+.app .container .form .form-sheet .form-upload {
+  margin-top: 1em;
+  justify-content: center;
+}
+.app .container .form .form-sheet .form-submit {
+  margin-top: 2em;
+  width: 50%;
+  height: 1.5rem;
+  background-color: #E07A5F;
+  opacity: 0.6;
+  font-family: "Lora", sans-serif;
+  border: none;
+  border-radius: 1em;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-align: center;
 }
 .app #instructions {
   text-align: center;

@@ -26,10 +26,12 @@ body {
         position: relative;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         width: 70%;
-        border: 1px dotted black;
+        border: 1px dotted black; // Production
         .col {
-            width: 50%;
+            width: 48%;
+            border: 1px dotted black; // Production
         }
         .intro{
             .intro-title{
@@ -52,7 +54,50 @@ body {
             }
         }
         .form {
-            
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+
+            .form-desc { 
+               font-size: 1rem;
+               font-weight: lighter; 
+               width: 100%;
+               text-align: center;
+            }
+            .form-sheet {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                .form-dropdown-label {
+                    text-align: center;
+                }
+                .form-dropdown-menu {
+                    background-color: $main-color-light;
+                    text-align: center;
+                    width: 55%;
+                }
+                .form-upload {
+                    margin-top: 1em;
+                    justify-content: center;
+                    
+                }
+                .form-submit {
+                    margin-top: 2em;
+                    width: 50%;
+                    height: 1.5rem;
+                    background-color: #E07A5F;
+                    opacity: 0.6;
+                    font-family: 'Lora', sans-serif;
+                    border: none;
+                    border-radius:1em;
+                    box-sizing: border-box;
+                    text-decoration:none;
+                    text-align: center;
+                }
+            }
+
         }
     }
 
