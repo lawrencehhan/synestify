@@ -38,6 +38,8 @@ export default function Intro(props:Intro) {
         visible: {
             opacity: 1,
             transition: {
+                delay: 3,
+                duration: 1,
                 ease: "easeInOut",
                 staggerChildren: 0.5,
             }
@@ -115,7 +117,7 @@ export default function Intro(props:Intro) {
                     Convert Visuals
                 </motion.button>
             </form>
-
+            <div>State Check: {formData.targetGenre}</div>
         </motion.div>
     )
 }
