@@ -12,17 +12,17 @@ export default function App() {
   const [darkMode, setDarkMode] = useState<boolean>(false)
   const handleDarkToggle = (event:React.ChangeEvent) => {
     setDarkMode( prevDarkMode => !prevDarkMode )
+    console.log("Darkmode On: " + !darkMode)
     event.stopPropagation()
   }
-
 
   return (
     <div className={`app ${darkMode&&"dark"}`}>
       <div className="container">
         <Intro />
-        <InputForm />
+        <InputForm darkMode={darkMode}/>
       </div>
-      {/* <DarkToggle darkMode={darkMode} handleDarkToggle={handleDarkToggle} /> */}
+      <DarkToggle darkMode={darkMode} handleDarkToggle={handleDarkToggle} />
     </div>
   );
 }

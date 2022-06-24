@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+interface Intro {
+    darkMode: boolean;
+}
 
-
-export default function Intro() {
+export default function Intro(props:Intro) {
+    const { darkMode } = props
+    console.log(darkMode)
     const [formData, setFormData] = React.useState(
         {
             targetGenre: "",
@@ -51,6 +55,20 @@ export default function Intro() {
             }
         }
     }
+    const buttonVariants = {
+        hover: {
+            scale: 1.05,
+            opacity: 0.8,
+            backgroundColor: "#81B29A",
+            transition: {
+                duration: 0.5,
+                ease: "easeOut"
+            }
+        },
+        tap: {
+            scale: 0.9,
+        }
+    }
 
     return (
         <motion.div className="col form"
@@ -68,7 +86,7 @@ export default function Intro() {
                     value={formData.targetGenre}
                     onChange={handleChange}
                     name="targetGenre"
-                    className="form-dropdown-menu"
+                    className={`form-dropdown-menu ${darkMode&&'dark'}`}
                     
                 >
                     <option value="">-- Temp --</option>
@@ -88,7 +106,14 @@ export default function Intro() {
                 >
                 </input>
                 <br></br>
-                <button className="form-submit">Convert Visuals</button>
+                <motion.button 
+                    className="form-submit"
+                    whileHover="hover"
+                    whileTap="tap"
+                    variants={buttonVariants}
+                >
+                    Convert Visuals
+                </motion.button>
             </form>
 
         </motion.div>

@@ -70,8 +70,13 @@ body #root {
 }
 .app .container .form .form-sheet .form-dropdown-menu {
   background-color: #FAF3DD;
+  color: #323031;
   text-align: center;
   width: 55%;
+}
+.app .container .form .form-sheet .form-dropdown-menu.dark {
+  background-color: #323031;
+  color: #FAF3DD;
 }
 .app .container .form .form-sheet .form-upload {
   margin-top: 1em;
@@ -90,60 +95,26 @@ body #root {
   text-decoration: none;
   text-align: center;
 }
-.app #instructions {
-  text-align: center;
+.app .dm-button {
+  padding: 8px;
+  display: flex;
+  margin: 0 4px 0 4px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  opacity: 0.7;
+  z-index: 1100;
 }
-.app .sub_item {
-  -webkit-animation-name: fade-in;
-  -webkit-animation-duration: 2s;
-  -webkit-animation-fill-mode: both;
-  animation-name: fade-in;
-  animation-duration: 2s;
-  animation-fill-mode: both;
-}
-.app .sub_item .file_sub {
-  margin-top: 0.5rem;
-}
-.app .sub_item .file_sub #files {
-  border: none;
-}
-.app .sub_item .form-label {
-  margin-right: 0.5rem;
-}
-.app .sub_item .form-control {
-  background-color: #F4F1DE;
-}
-.app #submit_btn {
-  background-color: #E07A5F;
-  color: #81B29A;
-  opacity: 0.5;
-  font-family: "Lora", sans-serif;
-  /*padding:0.35em 1.2em;
-  margin:0 0.3em 0.3em 0;*/
-  border: none;
-  border-radius: 0.12em;
-  box-sizing: border-box;
-  text-decoration: none;
-  transition: all 0.2s;
-  text-align: center;
-  width: 10vw;
-  -webkit-animation-name: fade-in-part;
-  -webkit-animation-duration: 2.5s;
-  -webkit-animation-fill-mode: both;
-  -webkit-animation-delay: 4s;
-  animation-name: fade-in-part;
-  animation-duration: 2.5s;
-  animation-fill-mode: both;
-  animation-delay: 4s;
-}
-.app #submit_btn:hover {
-  background-color: #81B29A;
-  color: #E07A5F;
-  opacity: 1;
+.app .dm-button .dm-image {
+  height: calc(0.45 * 26px);
+  width: auto;
+  margin-left: calc(0.25 * 26px);
+  margin-top: calc(0.275 * 26px);
 }
 
 .app.dark {
   background-color: #323031;
+  color: #FAF3DD;
 }
 
 @-webkit-keyframes fade-in {
