@@ -1,14 +1,8 @@
 body {
   margin: 0;
 }
-body #root {
-  width: 100vw;
-  height: 100vh;
-}
 
 .app {
-  width: 100%;
-  height: 100%;
   background-color: #FAF3DD;
   color: #323031;
   font-family: "Lora", sans-serif;
@@ -17,72 +11,73 @@ body #root {
   align-items: center;
   justify-content: center;
 }
-.app .container {
+.app .main-container {
+  height: 100vh;
+  width: 70vw;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 70%;
   border: 1px dotted black;
 }
-.app .container .col {
+.app .main-container .col {
   width: 48%;
   border: 1px dotted black;
 }
-.app .container .intro .intro-title {
+.app .main-container .intro .intro-title {
   font-size: 1.25rem;
   font-weight: bold;
 }
-.app .container .intro .intro-desc {
+.app .main-container .intro .intro-desc {
   font-size: 1rem;
   font-weight: lighter;
 }
-.app .container .intro .intro-desc .text-color {
+.app .main-container .intro .intro-desc .text-color {
   color: #E07A5F;
 }
-.app .container .intro .intro-desc .text-sound {
+.app .main-container .intro .intro-desc .text-sound {
   color: #81B29A;
 }
-.app .container .intro #synestify-desc {
+.app .main-container .intro #synestify-desc {
   color: #b2abf2;
   font-style: italic;
 }
-.app .container .form {
+.app .main-container .form {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
-.app .container .form .form-desc {
+.app .main-container .form .form-desc {
   font-size: 1rem;
   font-weight: lighter;
   width: 100%;
   text-align: center;
 }
-.app .container .form .form-sheet {
+.app .main-container .form .form-sheet {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
-.app .container .form .form-sheet .form-dropdown-label {
+.app .main-container .form .form-sheet .form-dropdown-label {
   text-align: center;
 }
-.app .container .form .form-sheet .form-dropdown-menu {
+.app .main-container .form .form-sheet .form-dropdown-menu {
   background-color: #FAF3DD;
   color: #323031;
   text-align: center;
   width: 55%;
 }
-.app .container .form .form-sheet .form-dropdown-menu.dark {
+.app .main-container .form .form-sheet .form-dropdown-menu.dark {
   background-color: #323031;
   color: #FAF3DD;
 }
-.app .container .form .form-sheet .form-upload {
+.app .main-container .form .form-sheet .form-upload {
   margin-top: 1em;
   justify-content: center;
 }
-.app .container .form .form-sheet .form-submit {
+.app .main-container .form .form-sheet .form-submit {
   margin-top: 2em;
   width: 50%;
   height: 1.5rem;
@@ -94,6 +89,11 @@ body #root {
   box-sizing: border-box;
   text-decoration: none;
   text-align: center;
+}
+.app .main-container .form .form-warning {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin-top: 0.5rem;
 }
 .app .dm-button {
   padding: 8px;

@@ -1,0 +1,38 @@
+.output-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 80%;
+    border: 1px dotted black; // Production
+    .output-summary {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content:flex-start;
+        height: 200vh;
+        width: 100%;
+        border: 1px dotted black;
+        .summary-title {
+            margin-top: 12vh;
+            font-size: 1.25rem;
+            text-align: center;
+            width: 100%;
+        }
+        .summary-content {
+            border: 1px dotted black;
+            width: 100%;
+        }
+    }
+    .output-recs {
+        border: 1px dotted black;
+        height: 20vh;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}

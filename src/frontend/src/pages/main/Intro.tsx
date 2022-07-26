@@ -13,6 +13,14 @@ export default function Intro() {
                 ease: "easeInOut",
                 staggerChildren: 0.5,
             }
+        },
+        hide: {
+            opacity: 0,
+            x: -100,
+            transition: {
+                ease: "easeInOut",
+                duration: 0.75,
+            }
         }
     }
     const childVariants = {
@@ -23,15 +31,17 @@ export default function Intro() {
             opacity: 1,
             transition: {
                 ease: "easeInOut",
-                duration: 2,
+                duration: 1.5,
             }
-        }
+        },
     }
 
     return (
         <motion.div className="col intro"
+            key="intro"
             initial="hidden"
             animate="visible"
+            exit="hide"
             variants={parentVariants}>
             <motion.p className='intro-title'
                 variants={childVariants}>

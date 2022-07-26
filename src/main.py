@@ -1,6 +1,5 @@
 import os
-
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, jsonify, request, render_template, redirect, url_for, session
 from flask_wtf.csrf import CSRFProtect
 from structlog import get_logger
 from uuid import uuid4
@@ -10,7 +9,7 @@ import json
 import plotly
 
 from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
-from tasks.task_connect_api import getSpotifyToken, getRecommendations, getSeedFromGenre
+from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getSeedFromGenre
 from webapp.forms import ConfigForm, OutputForm
 
 csrf = CSRFProtect()
@@ -19,6 +18,19 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = uuid4().bytes
 csrf.init_app(app)
 
+@app.route("/genres", methods=["GET"])
+def genres():
+    bearer_token = getSpotifyToken()
+    genre_list = getGenreSeeds(bearer_token)
+    if (request.method == "GET"):
+        return jsonify({"spotifyGenres": genre_list})
+
+
+@app.route("/analysis", methods=["POST", "GET"])
+def analysis():
+    if request.method == "POST":
+        target_genre = request.json['targetGenre']
+        return target_genre
 
 @app.route("/", methods=["POST", "GET"])
 def index():

@@ -1,35 +1,22 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+interface UserData {
+    targetGenre: string;
+    targetImage: File | null;
+    spotifyGenres?: string[];
+}
 interface Intro {
     darkMode: boolean;
+    userData: UserData;
+    handleFormChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit: (event: React.SyntheticEvent<Element, Event>) => void;
+    formWarning: boolean;
+    sizeWarning: boolean;
 }
 
 export default function Intro(props:Intro) {
-    const { darkMode } = props
-    console.log(darkMode)
-    const [formData, setFormData] = React.useState(
-        {
-            targetGenre: "",
-            targetImage: ""
-        }
-    )
-    console.log("Target Genre: " + formData.targetGenre)
-
-    function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        const {name, value} = event.target
-        setFormData(prevFormData => {
-            return {
-                ...prevFormData,
-                [name]: value
-            }
-        })
-    }
-    function handleSubmit(event: React.SyntheticEvent) {
-        event.preventDefault() // Preventing values from resetting on form once submitted
-        // submitToApi(formData)
-        console.log(formData)
-    }
-
+    const { darkMode, userData, handleFormChange, handleImageChange, handleSubmit, formWarning, sizeWarning } = props
 
     const parentVariants = {
         hidden: {
@@ -43,6 +30,14 @@ export default function Intro(props:Intro) {
                 ease: "easeInOut",
                 staggerChildren: 0.5,
             }
+        },
+        hide: {
+            opacity: 0,
+            x: 100,
+            transition: {
+                duration: 0.75,
+                ease: "easeInOut",
+            }
         }
     }
     const childVariants = {
@@ -55,7 +50,7 @@ export default function Intro(props:Intro) {
                 ease: "easeInOut",
                 duration: 2,
             }
-        }
+        },
     }
     const buttonVariants = {
         hover: {
@@ -74,8 +69,10 @@ export default function Intro(props:Intro) {
 
     return (
         <motion.div className="col form"
+            key="form"
             initial="hidden"
             animate="visible"
+            exit="hide"
             variants={parentVariants}>
             
             <p className='form-desc'>
@@ -85,26 +82,24 @@ export default function Intro(props:Intro) {
                 <label className="form-dropdown-label">Genre:&nbsp;</label>
                 <select 
                     id="targetGenre"
-                    value={formData.targetGenre}
-                    onChange={handleChange}
+                    value={userData.targetGenre}
                     name="targetGenre"
                     className={`form-dropdown-menu ${darkMode&&'dark'}`}
-                    
+                    onChange={handleFormChange}
                 >
-                    <option value="">-- Temp --</option>
-                    <option value="red">Red</option>
-                    <option value="orange">Orange</option>
-                    <option value="yellow">Yellow</option>
-                    <option value="green">Green</option>
-                    <option value="blue">Blue</option>
-                    <option value="indigo">Indigo</option>
-                    <option value="violet">Violet</option>
+                    <option value="">- Select a Genre -</option>
+                    {userData.spotifyGenres?.map(genre => 
+                        <option key={genre} value={genre}>{genre}</option>)
+                    }
                 </select>
 
                 <input
                     type="file"
                     name="targetImage"
                     className="form-upload"
+                    accept=".jpg, .jpeg, .png"
+                    onChange={handleImageChange}
+                    // accept="image/*" for any image acceptance
                 >
                 </input>
                 <br></br>
@@ -117,7 +112,9 @@ export default function Intro(props:Intro) {
                     Convert Visuals
                 </motion.button>
             </form>
-            <div>State Check: {formData.targetGenre}</div>
+            {formWarning && <div className="form-warning">Please make sure a genre and image are selected.</div>}
+            {formWarning && <div className="form-warning">Image file exceeds 1.5Mb limit.</div>}
+            <div>State Check: {userData.targetGenre}</div>
         </motion.div>
     )
 }
