@@ -97,12 +97,13 @@ export default function Intro(props:Intro) {
                     type="file"
                     name="targetImage"
                     className="form-upload"
-                    accept=".jpg, .jpeg, .png"
+                    // accept=".jpg, .jpeg, .png"
+                    accept="image/*"
                     onChange={handleImageChange}
                     // accept="image/*" for any image acceptance
                 >
                 </input>
-                <br></br>
+                <hr className="form-break"></hr>
                 <motion.button 
                     className="form-submit"
                     whileHover="hover"
@@ -113,8 +114,7 @@ export default function Intro(props:Intro) {
                 </motion.button>
             </form>
             {formWarning && <div className="form-warning">Please make sure a genre and image are selected.</div>}
-            {formWarning && <div className="form-warning">Image file exceeds 1.5Mb limit.</div>}
-            <div>State Check: {userData.targetGenre}</div>
+            {sizeWarning && <div className="form-warning">Image file exceeds 1.5Mb limit.</div>}
         </motion.div>
     )
 }

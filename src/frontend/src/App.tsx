@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'
 import Intro from './pages/main/Intro';
 import InputForm from './pages/main/InputForm';
+import Loading from './pages/loading/Loading';
 import Output from './pages/output/Output';
 import DarkToggle from './components/toggle/DarkToggle';
 import './App.css';
@@ -9,7 +10,31 @@ import { type } from 'os';
 interface UserData {
   targetGenre: string;
   targetImage: File | null;
+  imageUrl?: string;
   spotifyGenres?: string[];
+}
+interface targetSeedData {
+  seed: string;
+  name: string;
+}
+interface Recommendations {
+  trackID: number;
+  albumCover: string;
+  trackName: string;
+  artist: string;
+  url: string;
+}
+interface AnalysisResults {
+  analyzed: boolean;
+  targetGenre: string;
+  targetArtist: targetSeedData;
+  targetTrack: targetSeedData;
+  score: {
+    energy: number;
+    loudness: number;
+    tempo: number;
+  };
+  recommendations: [Recommendations]
 }
 
 export default function App() {
@@ -34,11 +59,12 @@ export default function App() {
     console.log("userData updated: spotifyGenres")
   }, [])
   // Input Form Data Handling
+  const [analysisResults, setAnalaysisResults] = useState<AnalysisResults>()
   const [formWarning, setFormWarning] = useState<boolean>(false)
   const [sizeWarning, setSizeWarning] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false)
   function handleFormChange(event: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) {
-
       const {name, value} = event.target
       setUserData(prevUserData => {
           return {
@@ -54,31 +80,39 @@ export default function App() {
     setUserData(prevUserData => {
       return {
         ...prevUserData,
-        targetImage: imageData
+        targetImage: imageData,
+        imageUrl: URL.createObjectURL(imageData)
       }
     })
-    const formData = new FormData()
-    formData.append("imageData", imageData)
-    formData.append("targetGenreNew", userData.targetGenre)
-    
     console.log("userData updated: " + event.target.name)
   }
   function submitToApi(userData: UserData) {
-    const formData = new FormData()
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json'},
-      // headers: { 'Content-type': 'multipart/form-data'},
-      body: JSON.stringify(userData)
+    if (userData.targetImage !== null && userData.targetGenre !== "") { 
+      let formData = new FormData()
+      formData.append("targetGenre", userData.targetGenre)
+      formData.append("targetImage", userData.targetImage, userData.targetImage?.name)
+      const requestOptions = {
+        method: 'POST',
+        body: formData
+      }
+      fetch('/analysis', requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          setAnalaysisResults(prevAnalysisResults => {
+            return {
+              ...prevAnalysisResults,
+              ...result
+            }
+          })
+          console.log("Analysis completed.")
+          setLoading(false)
+          setAnalysisComplete(true)
+        })
+        .catch(error => {
+          console.log('error', error)
+          setLoading(false)
+        })
     }
-    fetch('/analysis', requestOptions).then(
-      (response) => response.json()
-      .then((json) => {
-        console.log("Data submitted to flaskAPI: ")
-        console.log(json)
-      })
-    )
     return
   }
   function handleSubmit(event: React.SyntheticEvent<Element, Event>) {
@@ -91,11 +125,8 @@ export default function App() {
       } else {
         if (userData.targetImage.size <= 1500000) {
           console.log("Analyzing following data:" + userData)
+          setLoading(true) // Unmount the form page, and mount the loading animation
           submitToApi(userData)
-          // Initiate some loading UI? 
-          // Have some state variable to update as form being done once submittoapi finishes
-          // let this state variable update JSX to show output page
-          setAnalysisComplete(prevAnalysisComplete => !prevAnalysisComplete)
         } else {
           setSizeWarning(prevSizeWarning => {
             return prevSizeWarning ? prevSizeWarning : !prevSizeWarning
@@ -103,6 +134,8 @@ export default function App() {
           console.log("Image file exceeded 1.5MB")
         }
       }
+      // setAnalysisComplete(true)
+      // submitToApi(userData)
       // setAnalysisComplete(prevAnalysisComplete => !prevAnalysisComplete) // only for testing
   }
 
@@ -121,17 +154,19 @@ export default function App() {
     <div className={`app ${darkMode&&"dark"}`}>
 
       <AnimatePresence exitBeforeEnter>
-        {!analysisComplete &&
+        {!analysisComplete && !loading &&
           <motion.div className="main-container" key="main">
             <Intro />
             <InputForm darkMode={darkMode} userData={userData} handleFormChange={handleFormChange} handleImageChange={handleImageChange} handleSubmit={handleSubmit} formWarning={formWarning} sizeWarning={sizeWarning}/>
           </motion.div>  
         }
-        {analysisComplete &&
-          <Output darkMode={darkMode} handleDarkToggle={handleDarkToggle}></Output>
+        {!analysisComplete && loading &&
+          <Loading darkMode={darkMode} />
+        }
+        {analysisComplete && !loading && analysisResults &&
+          <Output analysisResults={analysisResults} userData={userData} darkMode={darkMode} ></Output>
         }
       </AnimatePresence>
-
 
       <DarkToggle darkMode={darkMode} handleDarkToggle={handleDarkToggle} />
     </div>

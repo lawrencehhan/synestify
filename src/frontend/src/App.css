@@ -77,8 +77,14 @@ body {
   margin-top: 1em;
   justify-content: center;
 }
+.app .main-container .form .form-sheet .form-break {
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+}
 .app .main-container .form .form-sheet .form-submit {
-  margin-top: 2em;
+  margin-top: 1em;
   width: 50%;
   height: 1.5rem;
   background-color: #E07A5F;
@@ -94,6 +100,17 @@ body {
   font-size: 0.75rem;
   opacity: 0.5;
   margin-top: 0.5rem;
+}
+.app .loading-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.app .loading-container .loading-subtitle {
+  margin-left: 1.5rem;
+}
+.app .loading-container .svg-circle {
+  overflow: visible;
 }
 .app .dm-button {
   padding: 8px;

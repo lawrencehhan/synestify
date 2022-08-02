@@ -3,54 +3,66 @@ import { motion } from 'framer-motion';
 interface Circle {
     animated: boolean;
     darkMode: boolean;
-    darkColor: string;
-    lightColor: string;
+    initialColor: string;
+    endColor: string;
     xpos: number;
     ypos: number;
+    radius: number;
 }
 
 export default function Circle(props:Circle) {
-    const {darkMode, animated, darkColor, lightColor, xpos, ypos} = props;
-    const strokeColor = darkMode ? lightColor : darkColor;
-    const strokeTransition = {
-        delay: 4,
-        duration: 5,
-        ease: [0.6, 0.01, -0.05, 0.95]
-    };
-    const circleTransition = {
-        delay: 4,
+    const { animated, xpos, ypos, radius, initialColor, endColor } = props;
+    const boxDim = radius*2.2
+    const boxDimHalf = boxDim/2
+    const strokeColor = initialColor
+    const boxTransition = {
+        delay: 0,
         repeat: Infinity,
         repeatType: undefined,
-        duration: 8,
+        duration: 10,
         ease: "easeInOut",
     }
-    const circleVariant = {
-        hidden: { x: xpos, y: ypos, },
+    const boxVariant = {
+        hidden: { 
+            x: 0, 
+            y: ypos,
+        },
         visible: {
-            x: [xpos, xpos*1.2, xpos, xpos*0.8, xpos],
-            y: [ypos, ypos*-1, ypos, ypos*-1, ypos],
-            transition: circleTransition,
+            opacity: 1,
+            x: [0, xpos-(-1*xpos), 0, xpos-(-1*xpos), 0],
+            y: [0, ypos-(-1*ypos), 0, ypos-(-1*ypos), 0],
+            transition: boxTransition,
         }
+    }
+    const circleVariant = { 
+        hidden: {
+            stroke: initialColor,
+            strokeWidth: 1,
+        },
+        visible: {
+            stroke: [initialColor, endColor, initialColor, endColor, initialColor],
+            strokeWidth: [1, 2, 1, 2, 1],
+            transition: boxTransition,
+        }
+
     }
 
     
     return (
-        <motion.svg className="svg-circle" height="300" width="300"
-            viewBox="0 0 300 300"
+        <motion.svg className="svg-circle" height={boxDim} width={boxDim}
+            viewBox={`0 0 ${boxDim} ${boxDim}`}
             initial="hidden"
             animate="visible"
-            variants={!animated ? undefined : circleVariant}
+            variants={!animated ? undefined : boxVariant}
         >
             <motion.circle
-                cx="150" 
-                cy="150" 
-                r="150" 
+                cx={boxDimHalf} 
+                cy={boxDimHalf}
+                r={radius} 
                 fill="none" 
-                stroke={strokeColor} 
-                stroke-width="1"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={!animated ? undefined : strokeTransition}
+                initial="hidden"
+                animate="visible"
+                variants={circleVariant}
                 >
             </motion.circle>
         </motion.svg>
