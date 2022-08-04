@@ -65,7 +65,10 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(false)
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false)
   function handleFormChange(event: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) {
-      const {name, value} = event.target
+      let {name, value} = event.target
+      if (value == "r-n-b") { // temporary fix to spotify api's ambiguity
+        value = "r&b"
+      }
       setUserData(prevUserData => {
           return {
               ...prevUserData,
