@@ -1,8 +1,8 @@
 # synestify
-Synestify analyzes a user-uploaded image and user-inputted information to recommend songs curated to reflect the image's visual cues and user's interests. The analysis matches tonal, hue, brightness, user-data, etc. to musical values accepted by Spotify's public API to utilize Spotify's recommendation engine. 
+Synestify analyzes a user-uploaded image and user-inputted information to recommend songs curated to reflect the image's visual cues and user's interests. The analysis matches tonal, hue, brightness, and user-data (genre selection) to musical values accepted by Spotify's public API to utilize Spotify's recommendation engine. 
 
 ## **Technical Workflow**
-Flask and Python were used to set up a web layout for receiving data, displaying recommended songs, and transforming image data into musical parameters. Upon generating musical parameters, Synestify connects to the Spotify for Developers API using the OAuth 2.0 client credentials flow. Synestify then sends HTTP calls to Spotify's recommendations endpoint to retrieve recommended song details and display results on a webpage. 
+React was used to create a front-end user interface, and Flask and Python were used to set up an API to receive user-submissions, accessing Spotify's API, and transforming the image data into musical parameters. Upon generating musical parameters, Synestify connects to the Spotify for Developers API using the OAuth 2.0 client credentials flow. Synestify then sends HTTP calls to Spotify's recommendations endpoint to retrieve recommended song details and display results on a webpage. 
 
 **Example Input Page**
 
@@ -25,9 +25,9 @@ Flask and Python were used to set up a web layout for receiving data, displaying
 - Create a duplicate of the `.env.example` file within the repository and rename it `.env`
 - Replace the `CLIENT_ID` and `CLIENT_SECRET` values with the saved values from Part 1
 - Run the `synestify/src/main.py` file to start up a local Flask app
-- Open a web browser and navigate to http://127.0.0.1:5000/ 
+- Run the React app found in the frontend directory (via 'npm start')
 - Select the genre to receive song recommmendations for
-- Click submit to view the top three song recommendations based on the parameters and image you provided!
+- Click submit to view the top 12 song recommendations based on the parameters and image you provided!
 
 ## **Creators**
 [Charles Chen](https://github.com/charlesyjchen) + 
