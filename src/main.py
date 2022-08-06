@@ -10,7 +10,6 @@ import plotly
 
 from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
 from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getSeedFromGenre, getArtistSeedFromGenre, getTrackSeedFromArtist
-from webapp.forms import ConfigForm, OutputForm
 
 csrf = CSRFProtect()
 log = get_logger(__name__)

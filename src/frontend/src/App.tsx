@@ -169,7 +169,7 @@ export default function App() {
         {analysisComplete && !loading && analysisResults &&
           <Output key="output" analysisResults={analysisResults} userData={userData} darkMode={darkMode} ></Output>
         }
-        { !analysisComplete || loading ? 
+        { (!analysisComplete && !loading) ? 
           <DarkToggle key="toggle-pre" darkMode={darkMode} handleDarkToggle={handleDarkToggle} /> :
           <DarkToggle key="toggle-post" darkMode={darkMode} handleDarkToggle={handleDarkToggle} />
         }
