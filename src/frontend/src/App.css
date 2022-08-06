@@ -1,0 +1,240 @@
+body {
+  margin: 0;
+}
+
+.app {
+  background-color: #FCECC9;
+  color: #293241;
+  font-family: "Plus Jakarta Sans", "Vazirmatn", sans-serif;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.app .main-container {
+  height: 100vh;
+  width: 70vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.app .main-container .col {
+  width: 48%;
+}
+.app .main-container .intro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  position: relative;
+}
+.app .main-container .intro .intro-bubbles {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  left: -50px;
+  top: -50px;
+}
+.app .main-container .intro .intro-bubbles .intro-title-bub {
+  position: absolute;
+  left: 110px;
+  top: 15px;
+  opacity: 40%;
+}
+.app .main-container .intro .intro-bubbles .intro-title-bub-large {
+  position: absolute;
+  left: 0;
+  top: -35px;
+  opacity: 40%;
+}
+.app .main-container .intro .intro-title {
+  position: relative;
+  z-index: 50;
+  font-size: 1.25rem;
+  width: 100%;
+}
+.app .main-container .intro .intro-title .intro-title-text {
+  position: relative;
+  z-index: 10;
+}
+.app .main-container .intro .intro-title .highlightBox {
+  content: "";
+  position: absolute;
+  height: 0.5rem;
+  width: 5rem;
+  margin-top: 0.75rem;
+  margin-left: -5rem;
+  background-image: linear-gradient(-120deg, #e0afa01d, #b5d5fe97 95%, #b5d5fe89);
+  border-radius: 1rem 0 1rem 0;
+  padding: 3px 6px;
+  z-index: 5;
+}
+.app .main-container .intro .intro-desc {
+  font-size: 1rem;
+  width: 90%;
+  font-weight: lighter;
+  font-family: "Vazirmatn", sans-serif;
+}
+.app .main-container .form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border: 0.75px solid #293241;
+  box-shadow: 12px 12px 2px 1px #b5d5fe81;
+}
+.app .main-container .form .form-desc-title {
+  font-size: 1.25rem;
+  width: 100%;
+  text-align: center;
+}
+.app .main-container .form .form-desc-text {
+  font-size: 0.825rem;
+  font-weight: lighter;
+  width: 80%;
+  text-align: center;
+}
+.app .main-container .form .hr-break {
+  width: 55%;
+  border-top: 1px solid #5465FF;
+  opacity: 50%;
+  margin-bottom: 1.5rem;
+}
+.app .main-container .form .form-sheet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.app .main-container .form .form-sheet .form-dropdown-label {
+  text-align: center;
+  font-family: "Vazirmatn", sans-serif;
+  font-size: 1rem;
+}
+.app .main-container .form .form-sheet .form-dropdown-menu {
+  background-color: #FCECC9;
+  color: #293241;
+  text-align: center;
+  width: 55%;
+}
+.app .main-container .form .form-sheet .form-dropdown-menu.dark {
+  background-color: #293241;
+  color: #FCECC9;
+}
+.app .main-container .form .form-sheet .form-upload {
+  margin-top: 1em;
+  justify-content: center;
+  font-family: "Vazirmatn", sans-serif;
+}
+.app .main-container .form .form-sheet .form-break {
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+}
+.app .main-container .form .form-sheet .form-submit {
+  margin-top: 1.5em;
+  width: 50%;
+  height: 1.5rem;
+  background-color: #B5D5FE;
+  opacity: 0.6;
+  font-family: "Lora", sans-serif;
+  border: none;
+  border-radius: 1em;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.app .main-container .form .form-warning {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin-top: 0.5rem;
+}
+.app .main-container .dm-form {
+  border: 0.75px solid #FCECC9;
+}
+.app .loading-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.app .loading-container .loading-subtitle {
+  margin-left: 1.5rem;
+}
+.app .loading-container .svg-circle {
+  overflow: visible;
+}
+.app .dm-button {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  margin: 0 4px 0 4px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  opacity: 0.7;
+  z-index: 1100;
+}
+.app .dm-button .dm-image {
+  height: calc(0.45 * 26px);
+  width: auto;
+  margin-left: calc(0.25 * 26px);
+  margin-top: calc(0.1 * 26px);
+  display: flex;
+  align-items: center;
+}
+.app .dm-button a.icon-wrapper {
+  height: 32px;
+  padding: 8px;
+  z-index: 1105;
+  position: absolute;
+  left: calc(50vw - 32px);
+  opacity: 0.2;
+}
+.app .dm-button a.icon-wrapper .contact-icon {
+  height: 100%;
+  width: auto;
+  z-index: 140;
+}
+
+.app.dark {
+  background-color: #293241;
+  color: #FCECC9;
+}
+
+/* Media Query for Tablets Ipads portrait mode */
+@media (max-width: 1023px) {
+  .app {
+    overflow-y: visible;
+  }
+  .app .main-container {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+  }
+  .app .main-container .col {
+    width: 100%;
+  }
+  .app .main-container .intro {
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+  .app .main-container .intro .intro-bubbles {
+    left: 0.125rem;
+  }
+  .app .main-container .intro .intro-title {
+    display: flex;
+    justify-content: center;
+  }
+  .app .main-container .intro .intro-title .highlightBox {
+    margin-left: 5rem;
+  }
+  .app .main-container .form .form-sheet .form-upload {
+    width: 60%;
+  }
+}
+
+/*# sourceMappingURL=App.css.map */

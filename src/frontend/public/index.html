@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="%PUBLIC_URL%/icon.png" />
+    <meta
+      name="description"
+      content="Synestify Web-app used to convert images to recommended Spotify selections"
+    />
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cantata+One:bold" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Vazirmatn">
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Synestify</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script>
+      window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+      }
+    </script>
+  </body>
+</html>

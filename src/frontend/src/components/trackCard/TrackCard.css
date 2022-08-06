@@ -1,0 +1,58 @@
+.card-container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 30%;
+  padding: 1rem 0 1rem 0;
+  margin-top: 2rem;
+  border: 1px dotted #293241;
+  box-shadow: 2px 1px 2px #B5D5FE;
+}
+.card-container .card-album-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 50%;
+}
+.card-container .card-album-container .card-album-cover {
+  max-width: 80%;
+}
+.card-container .card-info-container {
+  width: 50%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-content: center;
+}
+.card-container .card-info-container .card-text {
+  width: 100%;
+  height: auto;
+  margin: 4px;
+  display: flex;
+  align-items: center;
+}
+.card-container .card-info-container .card-link {
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.75rem;
+}
+
+.card-container-dm {
+  border: 1px solid #FCECC9;
+}
+
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card-container {
+    width: 45%;
+  }
+}
+@media (max-width: 767px) {
+  .card-container {
+    width: 90%;
+  }
+}
+
+/*# sourceMappingURL=TrackCard.css.map */

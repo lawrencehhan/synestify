@@ -37,7 +37,8 @@ def getGenreSeeds(bearer_token: str):
     # Get list of genres: https://developer.spotify.com/console/get-available-genre-seeds/
     url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
     genre_list = sendGetRequest(bearer_token, url)
-    return genre_list["genres"]
+    adjusted_genre_list = ["r&b" if genre=="r-n-b" else genre for genre in genre_list["genres"]]
+    return adjusted_genre_list
 
 
 def getSearchResults(bearer_token: str, query: str, search_type: str, limit: int):
@@ -75,7 +76,7 @@ def sendGetRequest(bearer_token: str, url: str):
 
 def _createSearchUrl(query: str, search_type: str, limit: int):
     base_url = "https://api.spotify.com/v1/search?"
-    query = "q=" + query.replace(" ", "%20")
+    query = "q=" + query.replace("&", "%26").replace(" ", "%20")
     search_type = "&type=" + search_type
     limit = "&limit=" + str(limit)
     search_url = base_url + query + search_type + limit
@@ -120,6 +121,28 @@ def getSeedFromGenre(bearer_token: str, seed_genre: str, search_type: str, total
     seed_name = seed['name']
     return (seed_id, seed_name)
 
+def getArtistSeedFromGenre(bearer_token: str, seed_genre: str, total_seeds: int):
+    seeds = getSearchResults(bearer_token, f"genre:{seed_genre}", "artist", total_seeds)
+    seed_selection_first, seed_selection_second  = findPopularArtists(seeds)
+    artist_first, artist_second = seeds['artists']['items'][seed_selection_first], seeds['artists']['items'][seed_selection_second]
+    artist_id_first, artist_id_second = artist_first['id'], artist_second['id']
+    artist_name_first, artist_name_second = artist_first['name'], artist_second['name']
+    return (artist_id_first, artist_name_first, artist_id_second, artist_name_second)
+
+def findPopularArtists(artistSeeds):
+    popularities = [item["popularity"] for item in artistSeeds['artists']['items']]
+    item_num_most = popularities.index(max(popularities))
+    del popularities[item_num_most]
+    item_num_second = popularities.index(max(popularities))
+    return item_num_most, item_num_second
+
+def getTrackSeedFromArtist(bearer_token: str, seed_artist: str, total_seeds: int):
+    seeds = getSearchResults(bearer_token, f"artist:{seed_artist}", 'track', total_seeds)
+    seed_selection = randint(0, total_seeds-1)
+    track_seed = seeds['tracks']['items'][seed_selection]
+    track_id = track_seed['id']
+    track_name = track_seed['name']
+    return (track_id, track_name)
 
 ### No longer needed
 def getCategories(bearer_token: str):
