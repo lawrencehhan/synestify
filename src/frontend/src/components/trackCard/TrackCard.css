@@ -3,9 +3,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 33%;
+  width: 30%;
+  padding: 1rem 0 1rem 0;
   margin-top: 2rem;
-  border: 1px dotted white;
+  border: 1px dotted #293241;
+  box-shadow: 2px 1px 2px #B5D5FE;
 }
 .card-container .card-album-container {
   display: flex;
@@ -35,6 +37,10 @@
   text-decoration: none;
   color: inherit;
   font-size: 0.75rem;
+}
+
+.card-container-dm {
+  border: 1px solid #FCECC9;
 }
 
 /* Media Query for Tablets Ipads portrait mode */

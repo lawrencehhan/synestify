@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer';
 import './TrackCard.css';
@@ -17,6 +17,20 @@ interface TrackCard {
 export default function TrackCard(props:TrackCard) {
     const { track, darkMode } = props
     const { trackID, albumCover, trackName, artist, url } = track
+    const [isMobile, setMobile] = useState<boolean>(false)
+    useEffect(() => {
+        // Listening for window resizing
+        if (window.innerWidth <= 1023) {
+        setMobile(true)
+        }
+        window.addEventListener("resize", function() {
+        if (window.innerWidth <= 1023) {
+            setMobile(true)
+        } else {
+            setMobile(false)
+        }
+        })
+    }, [])
     const controls = useAnimation();
     const { ref, inView } = useInView();
     useEffect(() => {
@@ -31,6 +45,19 @@ export default function TrackCard(props:TrackCard) {
         visible: {
             opacity: 1,
             transition: {
+                ease: "easeInOut",
+                duration: 1
+            }
+        }
+    }
+    const mainVariantsFirstRow = {
+        hidden: {
+            opacity: 0,
+        },
+        visible: {
+            opacity: 1,
+            transition: {
+                delay: 3,
                 ease: "easeInOut",
                 duration: 1
             }
@@ -53,12 +80,12 @@ export default function TrackCard(props:TrackCard) {
     }
 
     return (
-        <motion.div className="card-container" 
+        <motion.div className={`card-container ${darkMode&&"card-container-dm"}`}
         key={trackID}
         initial="hidden"
         animate={controls}
         ref={ref}
-        variants={mainVariants}>
+        variants={ (trackID<3) && !isMobile ? mainVariantsFirstRow : mainVariants}>
             <motion.div className="card-album-container">
                 <motion.img className="card-album-cover" src={albumCover}></motion.img>
             </motion.div>

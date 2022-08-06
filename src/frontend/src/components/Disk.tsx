@@ -14,11 +14,11 @@ export default function Disk(props:Disk) {
         hidden: { opacity: 0, y: 100},
         visible: { 
             opacity: 1, 
-            y: -12,
+            y: -15,
             transition: {
-                delay: 3.75, 
+                delay: 3, 
                 type: "spring",
-                velocity: 2, // 2 default
+                velocity: 1.5, // 2 default
                 mass: 4, // 1 default
                 damping: 13, // 10 default
             }

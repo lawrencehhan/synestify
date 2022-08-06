@@ -7,7 +7,6 @@ from werkzeug.utils import secure_filename
 from pathlib import Path
 import json
 import plotly
-from PIL import Image ## Delete in production
 
 from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
 from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getSeedFromGenre, getArtistSeedFromGenre, getTrackSeedFromArtist
@@ -42,6 +41,10 @@ def analysis():
         # track_seed, track_seed_name = getSeedFromGenre(bearer_token, target_genre, 'track', 50)
         track_seed, track_seed_name = getTrackSeedFromArtist(bearer_token, artist_seed_name_popular, 50)
         recommendations = getRecommendations(bearer_token, query_results_limit, "US", artist_seed_second, target_genre, track_seed, energy, loudness, tempo)
+        df = color_analysis(target_image)
+        pie_fig = create_pie_fig(df)
+        graphJSON = json.dumps(pie_fig, cls=plotly.utils.PlotlyJSONEncoder)
+        # graphJSON = pie_fig.to_json()
         results = {
             "analyzed": True,
             "targetGenre": target_genre,
@@ -64,14 +67,9 @@ def analysis():
                 "trackName": rec["name"],
                 "artist": rec["artists"][0]["name"],
                 "url": rec["external_urls"]["spotify"]
-            } for i, rec in enumerate(recommendations["tracks"])]
+            } for i, rec in enumerate(recommendations["tracks"])],
+            "pieGraphJSON": graphJSON
         }
-
-        # img_path = os.path.join(Path(__file__).parent, 'static', 'assets', 'submissions', session["image_name"])
-        # df = color_analysis(img_path)
-        # pie_fig = create_pie_fig(df)
-        # graphJSON = json.dumps(pie_fig, cls=plotly.utils.PlotlyJSONEncoder)
-
         return jsonify(results)
     elif request.method == "GET":
         return jsonify({"test": "hello"})

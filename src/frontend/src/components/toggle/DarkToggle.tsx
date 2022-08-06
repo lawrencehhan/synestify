@@ -15,8 +15,16 @@ export default function DarkToggle(props: ToggleProp) {
         visible: {
             opacity: 1,
             transition: {
-                delay: 3,
+                delay: 2,
                 duration: 1,
+                ease: "easeInOut"
+            }
+        },
+        hide: {
+            opacity: 0,
+            x: -100,
+            transition: {
+                duration: 2,
                 ease: "easeInOut"
             }
         }
@@ -85,6 +93,7 @@ export default function DarkToggle(props: ToggleProp) {
             className="dm-button"
             initial="hidden"
             animate="visible"
+            exit="hide'"
             variants={variants}>
                 <IOSSwitch />
                 <img 
@@ -92,6 +101,16 @@ export default function DarkToggle(props: ToggleProp) {
                     className="dm-image"
                     alt="Darkmode Type"
                 />
+                <a href="https://github.com/lawrencehhan/synestify" className="icon-wrapper" target="_blank">
+                    <motion.img 
+                        src={require(`../assets/${darkMode ? "githubDM.png" : "github.png"}`)}
+                        className='contact-icon' 
+                        alt="Github"
+                        initial="hidden"
+                        animate="visible"
+                        variants={variants}
+                    />
+                </a>
         </motion.div>
     )
 }

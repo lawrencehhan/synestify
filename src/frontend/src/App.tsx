@@ -7,6 +7,7 @@ import Output from './pages/output/Output';
 import DarkToggle from './components/toggle/DarkToggle';
 import './App.css';
 import { type } from 'os';
+import { Figure } from 'react-plotly.js';
 interface UserData {
   targetGenre: string;
   targetImage: File | null;
@@ -34,7 +35,8 @@ interface AnalysisResults {
     loudness: number;
     tempo: number;
   };
-  recommendations: [Recommendations]
+  recommendations: [Recommendations];
+  pieGraphJSON: Figure;
 }
 
 export default function App() {
@@ -118,6 +120,7 @@ export default function App() {
     }
     return
   }
+  console.log(analysisResults?.pieGraphJSON)
   function handleSubmit(event: React.SyntheticEvent<Element, Event>) {
       event.preventDefault() // Preventing values from resetting on form once submitted
       if (!userData.targetImage || userData.targetGenre == "") {
@@ -137,9 +140,6 @@ export default function App() {
           console.log("Image file exceeded 1.5MB")
         }
       }
-      // setAnalysisComplete(true)
-      // submitToApi(userData)
-      // setAnalysisComplete(prevAnalysisComplete => !prevAnalysisComplete) // only for testing
   }
 
 
@@ -159,19 +159,21 @@ export default function App() {
       <AnimatePresence exitBeforeEnter>
         {!analysisComplete && !loading &&
           <motion.div className="main-container" key="main">
-            <Intro />
+            <Intro darkMode={darkMode} />
             <InputForm darkMode={darkMode} userData={userData} handleFormChange={handleFormChange} handleImageChange={handleImageChange} handleSubmit={handleSubmit} formWarning={formWarning} sizeWarning={sizeWarning}/>
           </motion.div>  
         }
         {!analysisComplete && loading &&
-          <Loading darkMode={darkMode} />
+          <Loading key="loading" darkMode={darkMode} />
         }
         {analysisComplete && !loading && analysisResults &&
-          <Output analysisResults={analysisResults} userData={userData} darkMode={darkMode} ></Output>
+          <Output key="output" analysisResults={analysisResults} userData={userData} darkMode={darkMode} ></Output>
+        }
+        { !analysisComplete || loading ? 
+          <DarkToggle key="toggle-pre" darkMode={darkMode} handleDarkToggle={handleDarkToggle} /> :
+          <DarkToggle key="toggle-post" darkMode={darkMode} handleDarkToggle={handleDarkToggle} />
         }
       </AnimatePresence>
-
-      <DarkToggle darkMode={darkMode} handleDarkToggle={handleDarkToggle} />
     </div>
   );
 }

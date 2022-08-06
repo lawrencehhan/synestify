@@ -21,12 +21,18 @@ export default function Intro(props:Intro) {
     const parentVariants = {
         hidden: {
             opacity: 0,
+            rotate: 20,
+            x: 400,
+            y: 200,
         },
         visible: {
             opacity: 1,
+            rotate: 0,
+            x: 0,
+            y: 0,
             transition: {
-                delay: 3,
-                duration: 1,
+                delay: 2.5,
+                duration: 1.4,
                 ease: "easeInOut",
                 staggerChildren: 0.5,
             }
@@ -56,7 +62,8 @@ export default function Intro(props:Intro) {
         hover: {
             scale: 1.05,
             opacity: 0.8,
-            backgroundColor: "#81B29A",
+            color: "#FCECC9",
+            backgroundColor: "#5465FF",
             transition: {
                 duration: 0.5,
                 ease: "easeOut"
@@ -68,16 +75,21 @@ export default function Intro(props:Intro) {
     }
 
     return (
-        <motion.div className="col form"
+        <motion.div className={`col form ${darkMode&&'dm-form'}`}
             key="form"
             initial="hidden"
             animate="visible"
             exit="hide"
             variants={parentVariants}>
             
-            <p className='form-desc'>
-                A bit more information for analysis..
+            <p className='form-desc-title'>
+                try it out!
             </p>
+            <p className='form-desc-text'>
+                enter an image you want to hear, and 
+                select a genre to give the app some inspiration
+            </p>
+            <hr className="hr-break"></hr>
             <form onSubmit={handleSubmit} className="form-sheet">
                 <label className="form-dropdown-label">Genre:&nbsp;</label>
                 <select 
