@@ -40,6 +40,15 @@ def getGenreSeeds(bearer_token: str):
     adjusted_genre_list = ["r&b" if genre=="r-n-b" else genre for genre in genre_list["genres"]]
     return adjusted_genre_list
 
+def checkArtistAvailable(bearer_token: str, seed_genre: str):
+    # Check individual genre for Artist availablility (boolean return)
+    artist_info = getSearchResults(bearer_token,  f"genre:{seed_genre}", 'artist', 3)
+    total_artists = artist_info["artists"]["total"]
+    if total_artists < 2:
+        return False
+    else: 
+        return True
+
 
 def getSearchResults(bearer_token: str, query: str, search_type: str, limit: int):
     # Get recommended songs: https://developer.spotify.com/console/get-recommendations/
