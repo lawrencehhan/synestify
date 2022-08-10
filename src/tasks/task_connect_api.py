@@ -38,7 +38,30 @@ def getGenreSeeds(bearer_token: str):
     url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
     genre_list = sendGetRequest(bearer_token, url)
     adjusted_genre_list = ["r&b" if genre=="r-n-b" else genre for genre in genre_list["genres"]]
+    # Faulty genres found on 8/10/22
+    faulty_genres = [
+        "bossanova",
+        "holidays",
+        "metal-misc",
+        "movies",
+        "new-release",
+        "philippines-opm",
+        "post-dubstep",
+        "rainy-day",
+        "road-trip",
+        "soundtracks",
+        "summer",
+        "work-out"
+    ]
+    adjusted_genre_list = [genre for genre in adjusted_genre_list if genre not in faulty_genres]
     return adjusted_genre_list
+
+def getFaultyGenreSeeds(bearer_token: str):
+    url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
+    genre_list = sendGetRequest(bearer_token, url)
+    adjusted_genre_list = ["r&b" if genre=="r-n-b" else genre for genre in genre_list["genres"]]
+    faulty_genre_list = list(filter(lambda genre: not checkArtistAvailable(bearer_token, genre), adjusted_genre_list))
+    return faulty_genre_list
 
 def checkArtistAvailable(bearer_token: str, seed_genre: str):
     # Check individual genre for Artist availablility (boolean return)
