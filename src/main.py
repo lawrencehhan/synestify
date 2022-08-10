@@ -9,7 +9,7 @@ import json
 import plotly
 
 from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
-from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getSeedFromGenre, getArtistSeedFromGenre, getTrackSeedFromArtist, checkArtistAvailable
+from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getArtistSeedFromGenre, getTrackSeedFromArtist, getFaultyGenreSeeds
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
@@ -21,7 +21,6 @@ csrf.init_app(app)
 def genres():
     bearer_token = getSpotifyToken()
     genre_list = getGenreSeeds(bearer_token)
-    # full_genre_list = list(filter(lambda genre: checkArtistAvailable(bearer_token, genre), genre_list))
     if (request.method == "GET"):
         return jsonify({"spotifyGenres": genre_list})
 
