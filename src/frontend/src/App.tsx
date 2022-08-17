@@ -6,7 +6,6 @@ import Loading from './pages/loading/Loading';
 import Output from './pages/output/Output';
 import DarkToggle from './components/toggle/DarkToggle';
 import './App.css';
-import { type } from 'os';
 import { Figure } from 'react-plotly.js';
 interface UserData {
   targetGenre: string;
@@ -41,25 +40,39 @@ interface AnalysisResults {
 
 export default function App() {
   // Flask API Comms
+  const [connected, setConnected] = useState<boolean>(false)
   const [userData, setUserData] = useState<UserData>({
     targetGenre: "",
     targetImage: null,
     spotifyGenres: [],
   })
-  console.log(userData)
-  // Retreiving Spotify's available genre seeds
+  const [genresLoaded, setGenresLoaded] = useState<boolean>(false)
+
   useEffect(() => {
-    console.log("Fetching genres from flaskAPI..")
-    fetch("/genres").then(
+    // Status fetching from Flask API
+    fetch("/status").then(
       (response) => response.json()
       .then((json) => {
-        setUserData(prevData => {
-          return {...prevData, ...json}
-        })
+        console.log(json)
+        setConnected(true)
+        fetch("/genres").then(
+          (response) => response.json()
+          .then((json) => {
+            setUserData(prevData => {
+              return {...prevData, ...json}
+            })
+            setGenresLoaded(true)
+          })
+          .catch((err) => setConnected(false))
+        );
+    })
+      .catch((err) => {
+        console.log(err)
+        setConnected(false)
       })
     );
-    console.log("userData updated: spotifyGenres")
   }, [])
+
   // Input Form Data Handling
   const [analysisResults, setAnalaysisResults] = useState<AnalysisResults>()
   const [formWarning, setFormWarning] = useState<boolean>(false)
@@ -68,7 +81,7 @@ export default function App() {
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false)
   function handleFormChange(event: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) {
       let {name, value} = event.target
-      if (value == "r-n-b") { // temporary fix to spotify api's ambiguity
+      if (value === "r-n-b") { // temporary fix to spotify api's ambiguity
         value = "r&b"
       }
       setUserData(prevUserData => {
@@ -123,7 +136,7 @@ export default function App() {
   console.log(analysisResults?.pieGraphJSON)
   function handleSubmit(event: React.SyntheticEvent<Element, Event>) {
       event.preventDefault() // Preventing values from resetting on form once submitted
-      if (!userData.targetImage || userData.targetGenre == "") {
+      if (!userData.targetImage || userData.targetGenre === "") {
         setFormWarning(prevFormWarning => {
           return prevFormWarning ? prevFormWarning : !prevFormWarning
         })
@@ -157,14 +170,29 @@ export default function App() {
     <div className={`app ${darkMode&&"dark"}`}>
 
       <AnimatePresence exitBeforeEnter>
-        {!analysisComplete && !loading &&
+        {!connected &&
+          <Loading 
+            key="disconnected_synestify" 
+            message="Sorry, Synestify is currently offline" 
+            darkMode={darkMode} />
+        }  
+        {!genresLoaded && connected &&
+          <Loading 
+            key="loading_synestify" 
+            message="Connecting to Synestify" 
+            darkMode={darkMode} />
+        }        
+        {!analysisComplete && !loading && genresLoaded &&
           <motion.div className="main-container" key="main">
             <Intro darkMode={darkMode} />
             <InputForm darkMode={darkMode} userData={userData} handleFormChange={handleFormChange} handleImageChange={handleImageChange} handleSubmit={handleSubmit} formWarning={formWarning} sizeWarning={sizeWarning}/>
           </motion.div>  
         }
         {!analysisComplete && loading &&
-          <Loading key="loading" darkMode={darkMode} />
+          <Loading 
+            key="loading_analysis" 
+            message="finding your sounds . . . " 
+            darkMode={darkMode} />
         }
         {analysisComplete && !loading && analysisResults &&
           <Output key="output" analysisResults={analysisResults} userData={userData} darkMode={darkMode} ></Output>

@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion'
+import React from 'react';
+import { motion } from 'framer-motion'
 import Circle from '../../components/Circle'
-interface Loading {
+interface LoadingPage {
     darkMode: boolean;
+    message: string;
 }
 
-export default function Loading(props:Loading) {
-    const { darkMode } = props
+export default function Loading(props:LoadingPage) {
+    const { darkMode, message } = props
 
     const variants = {
         hidden: {
@@ -53,7 +54,7 @@ export default function Loading(props:Loading) {
                 darkMode={darkMode} />
             <motion.div 
                 className="loading-subtitle">
-                    finding your sounds . . . 
+                    {message}
             </motion.div>
         </motion.div>
     )
