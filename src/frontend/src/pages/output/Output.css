@@ -53,7 +53,7 @@
 .output-container .output-summary .summary-content-container .summary-content-images .summary-graph {
   position: relative;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   width: 100%;
 }
 .output-container .output-summary .summary-content-container .summary-content-main {

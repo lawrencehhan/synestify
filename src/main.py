@@ -17,6 +17,12 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = uuid4().bytes
 csrf.init_app(app)
 
+@app.route("/status", methods=["GET"])
+def status():
+    if (request.method == "GET"):
+        return jsonify({"status": "online"})
+
+
 @app.route("/genres", methods=["GET"])
 def genres():
     bearer_token = getSpotifyToken()

@@ -26,7 +26,7 @@ body {
 .app .main-container .intro {
   display: flex;
   flex-wrap: wrap;
-  justify-content: end;
+  justify-content: flex-end;
   position: relative;
 }
 .app .main-container .intro .intro-bubbles {
