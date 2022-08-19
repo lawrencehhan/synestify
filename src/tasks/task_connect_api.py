@@ -8,8 +8,6 @@ from random import randint
 
 
 load_dotenv()
-
-
 log = get_logger(__name__)
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
