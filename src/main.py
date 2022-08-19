@@ -2,8 +2,6 @@ from flask import Flask, jsonify, request
 from flask_wtf.csrf import CSRFProtect
 from structlog import get_logger
 from uuid import uuid4
-import json
-import plotly
 
 from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
 from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getArtistSeedFromGenre, getTrackSeedFromArtist, getFaultyGenreSeeds
@@ -47,7 +45,7 @@ def analysis():
         recommendations = getRecommendations(bearer_token, query_results_limit, "US", artist_seed_second, target_genre, track_seed, energy, loudness, tempo)
         df = color_analysis(target_image)
         pie_fig = create_pie_fig(df)
-        graphJSON = json.dumps(pie_fig, cls=plotly.utils.PlotlyJSONEncoder)
+        # graphJSON = json.dumps(pie_fig, cls=plotly.utils.PlotlyJSONEncoder)
         # graphJSON = pie_fig.to_json()
         results = {
             "analyzed": True,
