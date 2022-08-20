@@ -8,18 +8,18 @@ from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommenda
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
-app = Flask(__name__)
-app.config["SECRET_KEY"] = uuid4().bytes
-csrf.init_app(app)
+application = Flask(__name__)
+application.config["SECRET_KEY"] = uuid4().bytes
+csrf.init_app(application)
 
-@app.route("/status", methods=["GET"])
+@application.route("/status", methods=["GET"])
 def status():
     if (request.method == "GET"):
         log.info("Flask API accessed")
         return jsonify({"status": "online"})
 
 
-@app.route("/genres", methods=["GET"])
+@application.route("/genres", methods=["GET"])
 def genres():
     bearer_token = getSpotifyToken()
     genre_list = getGenreSeeds(bearer_token)
@@ -28,7 +28,7 @@ def genres():
         return jsonify({"spotifyGenres": genre_list})
 
 @csrf.exempt
-@app.route("/analysis", methods=["GET", "POST"])
+@application.route("/analysis", methods=["GET", "POST"])
 def analysis():
     if request.method == "POST":
         # Analysis variable prep
@@ -78,8 +78,7 @@ def analysis():
         return jsonify({"test": "hello"})
 
 if __name__ == "__main__":
-    # TODO: remove debug when in production
-    app.run(debug=True)
+    application.run(debug=True)
 
 
 
