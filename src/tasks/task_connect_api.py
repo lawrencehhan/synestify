@@ -54,13 +54,6 @@ def getGenreSeeds(bearer_token: str):
     adjusted_genre_list = [genre for genre in adjusted_genre_list if genre not in faulty_genres]
     return adjusted_genre_list
 
-def getFaultyGenreSeeds(bearer_token: str):
-    url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
-    genre_list = sendGetRequest(bearer_token, url)
-    adjusted_genre_list = ["r&b" if genre=="r-n-b" else genre for genre in genre_list["genres"]]
-    faulty_genre_list = list(filter(lambda genre: not checkArtistAvailable(bearer_token, genre), adjusted_genre_list))
-    return faulty_genre_list
-
 def checkArtistAvailable(bearer_token: str, seed_genre: str):
     # Check individual genre for Artist availablility (boolean return)
     artist_info = getSearchResults(bearer_token,  f"genre:{seed_genre}", 'artist', 3)
@@ -174,27 +167,11 @@ def getTrackSeedFromArtist(bearer_token: str, seed_artist: str, total_seeds: int
     track_name = track_seed['name']
     return (track_id, track_name)
 
-### No longer needed
-def getCategories(bearer_token: str):
-    categories_url = "https://api.spotify.com/v1/browse/categories?limit=50" # limit is capped at 50
-    categories_json = sendGetRequest(bearer_token, categories_url)
-    categories_list = categories_json['categories']['items']
-    categories_list = [item['id'] for item in categories_list]
-    return categories_list
-    
 
-def getGenreCategoriesOverlap(bearer_token: str):
-    categories_url = 'https://api.spotify.com/v1/browse/categories?limit=50' # limit is capped at 50
-    categories_json = sendGetRequest(bearer_token, categories_url)
-    categories_list = categories_json['categories']['items']
-    categories_list = [category for item in categories_list for category in item['id'].split('_')]
-    
-    genre_list = getGenreSeeds(bearer_token)
-    genre_list = [genre.replace('-', '') for genre in genre_list]
-
-    overlap_list = [genre for genre in genre_list if (genre in categories_list)]
-    return overlap_list
-
-# make two dictionaries referencing back each change to the original respective names so
-# 1) can access category for artist and song rec
-# 2) can access genre seed
+# Manually retrieve list of faulty genre lists to update adjusted genre list
+def getFaultyGenreSeeds(bearer_token: str):
+    url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
+    genre_list = sendGetRequest(bearer_token, url)
+    adjusted_genre_list = ["r&b" if genre=="r-n-b" else genre for genre in genre_list["genres"]]
+    faulty_genre_list = list(filter(lambda genre: not checkArtistAvailable(bearer_token, genre), adjusted_genre_list))
+    return faulty_genre_list

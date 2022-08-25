@@ -20,7 +20,7 @@
     "react-dom": "^18.1.0",
     "react-intersection-observer": "^9.3.5",
     "react-plotly.js": "^2.5.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "typescript": "^4.7.2",
     "web-vitals": "^2.1.4"
   },

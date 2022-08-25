@@ -7,10 +7,6 @@ from collections import Counter
 from sklearn.cluster import KMeans
 import plotly.express as px
 
-# base_path = Path(__file__).parent.parent.parent
-# img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_darkwindow.jpg')
-# img_path = os.path.join(base_path, 'tests', 'assets', 'sample_image_kyoto.jpg')
-
 ## Array based conversion method for image-to-hsl_array
 # Load and return image as 2d array
 def get_image_array(img_path, reduc_factor):
