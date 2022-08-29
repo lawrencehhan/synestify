@@ -37,6 +37,7 @@ def analysis():
         target_genre = request.form['targetGenre']
         log.info(f'Target genre: {target_genre}')
         target_image = request.files['targetImage']
+        print(type(target_image))
         log.info(f'Target image: {target_image.name}')
         # Analysis
         energy, loudness, tempo = get_image_score(target_image, reduc_factor=10)
