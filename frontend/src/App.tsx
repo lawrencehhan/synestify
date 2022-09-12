@@ -47,15 +47,19 @@ export default function App() {
     spotifyGenres: [],
   })
   const [genresLoaded, setGenresLoaded] = useState<boolean>(false)
-
+  const api_synestify = "https://api.synestify.com"
   useEffect(() => {
     // Status fetching from Flask API
-    fetch("/status").then(
+    console.log("Fetching API status")
+    console.log(api_synestify)
+    console.log("testing manual no proxy")
+    fetch(`${api_synestify}/status`).then(
       (response) => response.json()
       .then((json) => {
         console.log(json)
         setConnected(true)
-        fetch("/genres").then(
+        console.log("Fetching API genres")
+        fetch(`${api_synestify}/genres`).then(
           (response) => response.json()
           .then((json) => {
             setUserData(prevData => {
@@ -113,7 +117,7 @@ export default function App() {
         method: 'POST',
         body: formData
       }
-      fetch('/analysis', requestOptions)
+      fetch(`${api_synestify}/analysis`, requestOptions)
         .then(response => response.json())
         .then(result => {
           setAnalaysisResults(prevAnalysisResults => {

@@ -161,7 +161,9 @@ body {
             .form-warning {
                 font-size: 0.75rem;
                 opacity: 0.5; 
-                margin-top: 0.5rem;
+                margin-top: -1.25rem;
+                padding: 0.75rem;
+                text-align: center;
             }
         }
         .dm-form {
@@ -225,6 +227,13 @@ body {
 @media (max-width: 1023px){
     .app {
         overflow-y: visible;
+        height: 100vh;
+        width: 100vw;
+        .loading-container{
+            height: 50vh;
+            padding: 18px;
+            font-size: 0.75rem;
+        }
         .main-container { 
             justify-content: center;
             display: flex;
