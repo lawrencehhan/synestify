@@ -1,30 +1,45 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 from structlog import get_logger
 from uuid import uuid4
 
-from tasks.task_image_analysis import get_image_score, color_analysis, create_pie_fig
-from tasks.task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getArtistSeedFromGenre, getTrackSeedFromArtist, getFaultyGenreSeeds
+from task_image_analysis import get_image_score
+from task_connect_api import getSpotifyToken, getGenreSeeds, getRecommendations, getArtistSeedFromGenre, getTrackSeedFromArtist
 
 csrf = CSRFProtect()
 log = get_logger(__name__)
 application = Flask(__name__)
 application.config["SECRET_KEY"] = uuid4().bytes
 csrf.init_app(application)
+cors_resources = {
+    r"/*": {
+        "origins": [
+            "https://www.synestify.com",
+            "https://synestify.com",
+            "https://www.synestify.com/",
+            "http://synestify.com.s3-website-us-west-1.amazonaws.com"
+            ]
+    }
+}
+CORS(application, resources=cors_resources)
+application.config['CORS_HEADERS'] = 'Content-Type'
+
+@application.route("/")
+def starting_url():
+	status_code = Response(status=200)
+	return status_code
 
 @application.route("/status", methods=["GET"])
 def status():
     if (request.method == "GET"):
-        # log.info("Flask API accessed")
         return jsonify({"status": "online"})
-
 
 @application.route("/genres", methods=["GET"])
 def genres():
     bearer_token = getSpotifyToken()
     genre_list = getGenreSeeds(bearer_token)
     if (request.method == "GET"):
-        # log.info("Spotify genres retrieved with access token")
         return jsonify({"spotifyGenres": genre_list})
 
 @csrf.exempt

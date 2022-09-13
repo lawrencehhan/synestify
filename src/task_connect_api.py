@@ -12,11 +12,9 @@ log = get_logger(__name__)
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
-
 def getSpotifyToken():
     # Client Credentials Flow: https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
     authUrl = "https://accounts.spotify.com/api/token"
-
     message = f"{CLIENT_ID}:{CLIENT_SECRET}".encode("ascii")
     base64_message = base64.b64encode(message).decode("ascii")
 

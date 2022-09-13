@@ -1,0 +1,14 @@
+Flask==2.0.1
+flask_wtf
+Flask-WTF
+numpy
+pandas
+Pillow
+pytest
+python-dotenv
+requests
+scipy
+structlog
+scikit-learn
+plotly==5.6.0
+flask-cors

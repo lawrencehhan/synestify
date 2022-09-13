@@ -15,7 +15,7 @@ body {
 
 .app {
     // width: 100%;
-    // height: 100%;
+    height: 100%;
     background-color: $main-color-light;
     color: $main-color-dark;
     font-family: 'Plus Jakarta Sans', 'Vazirmatn', sans-serif;
@@ -31,7 +31,6 @@ body {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        // border: 1px dotted black; // Production
         .col {
             width: 48%;
         }
@@ -84,6 +83,7 @@ body {
             .intro-desc {
                 font-size: 1rem;
                 width: 90%;
+                padding: 24px;
                 font-weight: lighter;
                 font-family: 'Vazirmatn', sans-serif;
             }
@@ -161,7 +161,9 @@ body {
             .form-warning {
                 font-size: 0.75rem;
                 opacity: 0.5; 
-                margin-top: 0.5rem;
+                margin-top: -1.25rem;
+                padding: 0.75rem;
+                text-align: center;
             }
         }
         .dm-form {
@@ -225,17 +227,24 @@ body {
 @media (max-width: 1023px){
     .app {
         overflow-y: visible;
+        width: 100vw;
+        .loading-container{
+            padding: 18px;
+            font-size: 0.75rem;
+        }
         .main-container { 
             justify-content: center;
             display: flex;
             flex-wrap: wrap;
             align-content: center;
+            height: 100vh;
+            width: 82vw;
             .col {
                 width: 100%;
             }
             .intro{
                 justify-content: center;
-                margin-bottom: 3rem;
+                margin-bottom: 12px;
                 .intro-bubbles {
                     left: 0.125rem;
                 }
@@ -246,6 +255,10 @@ body {
                         margin-left: 5rem;
                     }
                 }
+                .intro-desc {
+                    margin-top: 24px;
+                    padding: 0;
+                }
             }
             .form {
                 .form-sheet {
@@ -255,7 +268,15 @@ body {
                 }
             }
         }
+        .dm-button{
+            bottom: 12px;
+            left: 8px;
+            opacity: 0.5;
+        }
     }
+    // .loading-app {
+    //     height: 100vh;
+    // }
 }
 // @media (max-width: 767px) {
 //     .card-container {
