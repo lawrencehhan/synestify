@@ -12,7 +12,7 @@ import plotly.express as px
 def get_image_array(img_path, reduc_factor):
     img = Image.open(img_path).reduce(reduc_factor)
     rgb_imgar = np.asarray(img) # Convert Pillow img to np.array
-
+    rgb_imgar = rgb_imgar[...,:3]
     return rgb_imgar
 
 # Load and return image as 2d array at a reduced size
@@ -25,7 +25,6 @@ def get_reduced_image_array(img_path, reduc_factor):
 # Takes 3d array of rgb image, and returns hue, saturation, and luminance as 2d arrays
 def get_hsl(rgb_imgar):
     rgb_imgar = rgb_imgar/255 # normalize rgb values
-    
     r, g, b = rgb_imgar.T # Transposes 3d array, and separates into 2d color arrays
     
     min_rgb, max_rgb = np.min(rgb_imgar, 2).T, np.max(rgb_imgar, 2).T # Gets the min of each individual pixel, hence the 2 for order # (ex. 0,1,2)
@@ -109,7 +108,7 @@ def df_scoring(df):
     loudness = round(df['SATURATION'].mean()/100, 2)
     tempo = ((170-70)*((df['LIGHTNESS'].mean()-0)/100))+70 # Tempo normalized to 70-170 range
     tempo = round(tempo, 2)
-    print(f'energy: {energy}, loudness: {loudness}, tempo: {tempo}')
+    # print(f'energy: {energy}, loudness: {loudness}, tempo: {tempo}')
     return (energy, loudness, tempo)
 
 # Wrapped up executable function to collect scores from raw image file
