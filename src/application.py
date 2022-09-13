@@ -16,11 +16,14 @@ cors_resources = {
     r"/*": {
         "origins": [
             "https://www.synestify.com",
+            "https://synestify.com",
+            "https://www.synestify.com/",
             "http://synestify.com.s3-website-us-west-1.amazonaws.com"
             ]
     }
 }
 CORS(application, resources=cors_resources)
+application.config['CORS_HEADERS'] = 'Content-Type'
 
 @application.route("/")
 def starting_url():

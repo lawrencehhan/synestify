@@ -9,9 +9,9 @@ interface ToggleProp {
 }
 
 export default function DarkToggle(props: ToggleProp) {
-    const {darkMode, handleDarkToggle, isMobile} = props
+    const {darkMode, handleDarkToggle} = props
     const variants = {
-        hidden: !isMobile ? { opacity: 0, } : { opacity: 1 },
+        hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {

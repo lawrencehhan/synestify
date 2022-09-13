@@ -51,25 +51,29 @@ export default function App() {
   useEffect(() => {
     // Status fetching from Flask API
     console.log("Fetching API status")
-    console.log(api_synestify)
-    console.log("testing manual no proxy")
     fetch(`${api_synestify}/status`).then(
       (response) => response.json()
       .then((json) => {
         console.log(json)
         setConnected(true)
-        console.log("Fetching API genres")
-        fetch(`${api_synestify}/genres`).then(
-          (response) => response.json()
-          .then((json) => {
-            setUserData(prevData => {
-              return {...prevData, ...json}
-            })
-            setGenresLoaded(true)
-          })
-          .catch((err) => setConnected(false))
-        );
     })
+      .catch((err) => {
+        console.log(err)
+        setConnected(false)
+      })
+    );
+  }, [])
+
+  useEffect(() => {
+    console.log("Fetching API genres")
+    fetch(`${api_synestify}/genres`).then(
+      (response) => response.json()
+      .then((json) => {
+        setUserData(prevData => {
+          return {...prevData, ...json}
+        })
+        setGenresLoaded(true)
+      })
       .catch((err) => {
         console.log(err)
         setConnected(false)
@@ -163,15 +167,23 @@ export default function App() {
   // Dark Mode Handling
   const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [darkMode, setDarkMode] = useState<boolean>(isDarkMode)
+  useEffect(() => {
+    if (darkMode) {
+      document.body.style.backgroundColor = "#293241"
+    } else {
+      document.body.style.backgroundColor = "#FCECC9"
+    }
+  }, [darkMode])
   const handleDarkToggle = (event:React.ChangeEvent) => {
     setDarkMode( prevDarkMode => !prevDarkMode )
     console.log("Darkmode switch: " + !darkMode)
+    const newDarkModeOn = !darkMode
     event.stopPropagation()
   }
 
 
   return (
-    <div className={`app ${darkMode&&"dark"}`}>
+    <div className={`app ${darkMode&&"dark"} ${(!connected||!genresLoaded||loading)&&"loading-app"}`}>
 
       <AnimatePresence exitBeforeEnter>
         {!connected &&
@@ -201,9 +213,8 @@ export default function App() {
         {analysisComplete && !loading && analysisResults &&
           <Output key="output" analysisResults={analysisResults} userData={userData} darkMode={darkMode} ></Output>
         }
-        { (!analysisComplete && !loading) ? 
-          <DarkToggle key="toggle-pre" darkMode={darkMode} handleDarkToggle={handleDarkToggle} /> :
-          <DarkToggle key="toggle-post" darkMode={darkMode} handleDarkToggle={handleDarkToggle} />
+        { (genresLoaded && !loading) &&
+          <DarkToggle key="dm_toggle" darkMode={darkMode} handleDarkToggle={handleDarkToggle} /> 
         }
       </AnimatePresence>
     </div>

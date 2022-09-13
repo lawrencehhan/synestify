@@ -3,6 +3,7 @@ body {
 }
 
 .app {
+  height: 100%;
   background-color: #FCECC9;
   color: #293241;
   font-family: "Plus Jakarta Sans", "Vazirmatn", sans-serif;
@@ -73,6 +74,7 @@ body {
 .app .main-container .intro .intro-desc {
   font-size: 1rem;
   width: 90%;
+  padding: 24px;
   font-weight: lighter;
   font-family: "Vazirmatn", sans-serif;
 }
@@ -210,11 +212,9 @@ body {
 @media (max-width: 1023px) {
   .app {
     overflow-y: visible;
-    height: 100vh;
     width: 100vw;
   }
   .app .loading-container {
-    height: 50vh;
     padding: 18px;
     font-size: 0.75rem;
   }
@@ -223,13 +223,15 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-content: center;
+    height: 100vh;
+    width: 82vw;
   }
   .app .main-container .col {
     width: 100%;
   }
   .app .main-container .intro {
     justify-content: center;
-    margin-bottom: 3rem;
+    margin-bottom: 12px;
   }
   .app .main-container .intro .intro-bubbles {
     left: 0.125rem;
@@ -241,8 +243,17 @@ body {
   .app .main-container .intro .intro-title .highlightBox {
     margin-left: 5rem;
   }
+  .app .main-container .intro .intro-desc {
+    margin-top: 24px;
+    padding: 0;
+  }
   .app .main-container .form .form-sheet .form-upload {
     width: 60%;
+  }
+  .app .dm-button {
+    bottom: 12px;
+    left: 8px;
+    opacity: 0.5;
   }
 }
 
