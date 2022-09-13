@@ -8,6 +8,10 @@ import { Figure } from 'react-plotly.js';
 interface UserData {
     targetGenre: string;
     targetImage: File | null;
+    imageInfo: {
+      largeImage: boolean;
+      imageSize: number;
+    };
     imageUrl?: string;
     spotifyGenres?: string[];
   }

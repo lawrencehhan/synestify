@@ -109,7 +109,7 @@ export default function Intro(props:Intro) {
             <motion.p className='intro-desc'
                 variants={childVariants}>
                 Synestify is an image-analysis webapp that lets 
-                you see the sounds of your image.&nbsp; By analyzing your
+                you see the sounds of your image.&nbsp;By analyzing your
                 image's tones and dynamics, synestify connects to Spotify's API
                 to recommend songs that match the visual.
             </motion.p>

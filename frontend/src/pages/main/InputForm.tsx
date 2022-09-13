@@ -3,8 +3,13 @@ import { motion } from 'framer-motion';
 interface UserData {
     targetGenre: string;
     targetImage: File | null;
+    imageInfo: {
+      largeImage: boolean;
+      imageSize: number;
+    };
+    imageUrl?: string;
     spotifyGenres?: string[];
-}
+  }
 interface Intro {
     darkMode: boolean;
     userData: UserData;

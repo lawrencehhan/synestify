@@ -10,6 +10,10 @@ import { Figure } from 'react-plotly.js';
 interface UserData {
   targetGenre: string;
   targetImage: File | null;
+  imageInfo: {
+    largeImage: boolean;
+    imageSize: number;
+  };
   imageUrl?: string;
   spotifyGenres?: string[];
 }
@@ -44,17 +48,21 @@ export default function App() {
   const [userData, setUserData] = useState<UserData>({
     targetGenre: "",
     targetImage: null,
+    imageInfo: {
+      largeImage: false,
+      imageSize: 0
+    },
     spotifyGenres: [],
   })
   const [genresLoaded, setGenresLoaded] = useState<boolean>(false)
   const api_synestify = "https://api.synestify.com"
+  // const api_synestify = "http://127.0.0.1:5000"
   useEffect(() => {
     // Status fetching from Flask API
     console.log("Fetching API status")
     fetch(`${api_synestify}/status`).then(
       (response) => response.json()
       .then((json) => {
-        console.log(json)
         setConnected(true)
     })
       .catch((err) => {
@@ -107,15 +115,21 @@ export default function App() {
       return {
         ...prevUserData,
         targetImage: imageData,
+        imageInfo: {
+          largeImage: imageData.size > 200000,
+          imageSize: imageData.size
+        },
         imageUrl: URL.createObjectURL(imageData)
       }
     })
     console.log("userData updated: " + event.target.name)
   }
+
   function submitToApi(userData: UserData) {
     if (userData.targetImage !== null && userData.targetGenre !== "") { 
       let formData = new FormData()
       formData.append("targetGenre", userData.targetGenre)
+      formData.append("imageInfo", JSON.stringify(userData.imageInfo))
       formData.append("targetImage", userData.targetImage, userData.targetImage?.name)
       const requestOptions = {
         method: 'POST',
@@ -141,7 +155,6 @@ export default function App() {
     }
     return
   }
-  console.log(analysisResults?.pieGraphJSON)
   function handleSubmit(event: React.SyntheticEvent<Element, Event>) {
       event.preventDefault() // Preventing values from resetting on form once submitted
       if (!userData.targetImage || userData.targetGenre === "") {
@@ -150,7 +163,7 @@ export default function App() {
         })
         console.log("Form submitted with incomplete data.")
       } else {
-        if (userData.targetImage.size <= 1500000) {
+        if (userData.targetImage.size <= 1250000) {
           console.log("Analyzing following data:" + userData)
           setLoading(true) // Unmount the form page, and mount the loading animation
           submitToApi(userData)
@@ -158,7 +171,7 @@ export default function App() {
           setSizeWarning(prevSizeWarning => {
             return prevSizeWarning ? prevSizeWarning : !prevSizeWarning
           })
-          console.log("Image file exceeded 1.5MB")
+          console.log("Image file exceeded 10MB")
         }
       }
   }

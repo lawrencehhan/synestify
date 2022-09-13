@@ -6,32 +6,36 @@ import Disk from '../../components/Disk';
 interface UserData {
     targetGenre: string;
     targetImage: File | null;
+    imageInfo: {
+      largeImage: boolean;
+      imageSize: number;
+    };
     imageUrl?: string;
     spotifyGenres?: string[];
   }
 interface targetSeedData {
-  seed: string;
-  name: string;
+    seed: string;
+    name: string;
 }
 interface Recommendations {
-  trackID: number;
-  albumCover: string;
-  trackName: string;
-  artist: string;
-  url: string;
+    trackID: number;
+    albumCover: string;
+    trackName: string;
+    artist: string;
+    url: string;
 }
 interface AnalysisResults {
-  analyzed: boolean;
-  targetGenre: string;
-  targetArtist: targetSeedData;
-  targetTrack: targetSeedData;
-  score: {
-    energy: number;
-    loudness: number;
-    tempo: number;
-  };
-  recommendations: [Recommendations];
-  pieGraphJSON: Figure;
+    analyzed: boolean;
+    targetGenre: string;
+    targetArtist: targetSeedData;
+    targetTrack: targetSeedData;
+    score: {
+        energy: number;
+        loudness: number;
+        tempo: number;
+    };
+    recommendations: [Recommendations];
+    pieGraphJSON: Figure;
 }
 interface Output {
     userData: UserData;
