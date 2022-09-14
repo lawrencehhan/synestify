@@ -116,7 +116,7 @@ export default function App() {
         ...prevUserData,
         targetImage: imageData,
         imageInfo: {
-          largeImage: imageData.size > 200000,
+          largeImage: imageData.size > (2.5 * 1024 * 1024),
           imageSize: imageData.size
         },
         imageUrl: URL.createObjectURL(imageData)
@@ -163,7 +163,7 @@ export default function App() {
         })
         console.log("Form submitted with incomplete data.")
       } else {
-        if (userData.targetImage.size <= 1250000) {
+        if (userData.targetImage.size <= (10 * 1024 * 1024)) {
           console.log("Analyzing following data:" + userData)
           setLoading(true) // Unmount the form page, and mount the loading animation
           submitToApi(userData)

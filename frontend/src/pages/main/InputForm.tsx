@@ -131,7 +131,7 @@ export default function Intro(props:Intro) {
                 </motion.button>
             </form>
             {formWarning && <div className="form-warning">Please make sure a genre and image are selected.</div>}
-            {sizeWarning && <div className="form-warning">Image file exceeds 1.5Mb limit.</div>}
+            {sizeWarning && <div className="form-warning">Image file exceeds 10Mb limit.</div>}
         </motion.div>
     )
 }
